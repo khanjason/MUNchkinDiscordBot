@@ -5,18 +5,21 @@ from discord.ext import commands, tasks
 class Chair(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.session=False
-        self.general_speakers=[]
+        self.session={}
+        
+        self.general_speakers={}
+        
 
     @commands.command()
     async def startSession(self, ctx):
-        self.session=True
+        self.session[ctx.guild.id]=True
+        self.general_speakers[ctx.guild.id]=[]
         await ctx.channel.send("Session has started!")
 
     @commands.command()
     async def endSession(self, ctx):
-        self.session=False
-        self.general_speakers=[]
+        self.session[ctx.guild.id]=False
+        self.general_speakers[ctx.guild.id]=[]
         self.bot.get_cog('Delegate').general_speakers=[]
         await ctx.channel.send("Session has ended!")
         
@@ -25,7 +28,7 @@ class Chair(commands.Cog):
         if self.session==True:
                 
                 await ctx.channel.send("General Speakers List: ")
-                await ctx.channel.send(self.bot.get_cog('Delegate').general_speakers)
+                await ctx.channel.send(self.bot.get_cog('Delegate').general_speakers[ctx.guild.id])
     @commands.command(pass_context=True)
     async def speak(self,ctx, *,args):
         if self.session==True:

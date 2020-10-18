@@ -11,13 +11,13 @@ class Delegate(commands.Cog):
             self.session=self.chair.session
             self.general_speakers=self.chair.general_speakers
         else:
-            self.session=False
-            self.general_speakers=[]
+            self.session={}
+            self.general_speakers={}
         
     @commands.command()
     async def addGS(self,ctx):
         if self.chair.session==True:
-                self.general_speakers.append(str(ctx.author.nick))
+                self.general_speakers[ctx.guild.id].append(str(ctx.author.nick))
                 await ctx.channel.send(ctx.author.mention+' has been added to the General Speakers List!')
 
 
