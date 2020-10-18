@@ -13,7 +13,7 @@ class Chair(commands.Cog):
     @commands.command()
     async def startSession(self, ctx):
         self.session[ctx.guild.id]=True
-        if self.delegate is not none:
+        if self.delegate is not None:
             self.delegate.session[ctx.guild.id]=True
         self.general_speakers[ctx.guild.id]=[]
         await ctx.channel.send("Session has started!")
@@ -22,7 +22,7 @@ class Chair(commands.Cog):
     @commands.command()
     async def endSession(self, ctx):
         self.session[ctx.guild.id]=False
-        if self.delegate is not none:
+        if self.delegate is not None:
             self.delegate.session[ctx.guild.id]=False
         self.general_speakers[ctx.guild.id]=[]
         self.bot.get_cog('Delegate').general_speakers=[]
