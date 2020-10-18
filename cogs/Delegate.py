@@ -2,6 +2,7 @@ import discord
 import time
 import asyncio
 from discord.ext import commands, tasks
+from collections import defaultdict
 
 class Delegate(commands.Cog):
     def __init__(self, bot):
@@ -12,7 +13,7 @@ class Delegate(commands.Cog):
             self.general_speakers=self.chair.general_speakers
         else:
             self.session={}
-            self.general_speakers={}
+            self.general_speakers=defaultdict(list)
         
     @commands.command()
     async def addGS(self,ctx):

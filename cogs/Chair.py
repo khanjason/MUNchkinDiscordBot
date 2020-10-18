@@ -1,13 +1,14 @@
 import discord
 import time
 import asyncio
+from collections import defaultdict
 from discord.ext import commands, tasks
 class Chair(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.session={}
         self.delegate=self.bot.get_cog('Delegate')
-        self.general_speakers={}
+        self.general_speakers=defaultdict(list)
         
     @commands.has_role('Committee')
     @commands.command()
