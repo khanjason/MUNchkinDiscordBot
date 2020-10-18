@@ -17,6 +17,7 @@ class Chair(commands.Cog):
     async def endSession(self, ctx):
         self.session=False
         self.general_speakers=[]
+        self.bot.get_cog('Delegate').general_speakers=[]
         await ctx.channel.send("Session has ended!")
         
     @commands.command()
