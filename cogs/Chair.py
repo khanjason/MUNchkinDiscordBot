@@ -25,13 +25,13 @@ class Chair(commands.Cog):
         
     @commands.command()
     async def GS(self, ctx):
-        if self.session==True:
+        if self.session[ctx.guild.id]==True:
                 
                 await ctx.channel.send("General Speakers List: ")
                 await ctx.channel.send(self.bot.get_cog('Delegate').general_speakers[ctx.guild.id])
     @commands.command(pass_context=True)
     async def speak(self,ctx, *,args):
-        if self.session==True:
+        if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
                 u=args[0]
                 t=int(args[1])
@@ -51,7 +51,7 @@ class Chair(commands.Cog):
                 
     @commands.command(pass_context=True)
     async def propose(self, ctx,*,args):
-        if self.session==True:
+        if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
                 type=args[0]
                 if type=='mod':
@@ -71,7 +71,7 @@ class Chair(commands.Cog):
                         await m.add_reaction("\U0001F44E")
     @commands.command(pass_context=True)
     async def mod(self,ctx, *,args):
-        if self.session==True:
+        if self.session[ctx.guild.id]==True:
             args=args.split(' ')
             t=int(args[0])
             await ctx.send("The Mod has started!")
@@ -84,7 +84,7 @@ class Chair(commands.Cog):
                 await ctx.send(f"Mod is over!")
     @commands.command(pass_context=True)
     async def unmod(self,ctx, *,args):
-        if self.session==True:
+        if self.session[ctx.guild.id]==True:
             args=args.split(' ')
             t=int(args[0])
             await ctx.send("The UnMod has started!")
