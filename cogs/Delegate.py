@@ -7,9 +7,9 @@ class Delegate(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.chair=self.bot.get_cog('Chair')
-        if chair is not None:
+        if self.chair is not None:
             self.session=chair.session
-            self.general_speakers=chair.general_speakers
+            self.general_speakers=self.chair.general_speakers
         else:
             self.session=False
             self.general_speakers=[]
