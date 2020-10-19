@@ -38,7 +38,7 @@ class Delegate(commands.Cog):
 '...with approval', '...with concern', '...with deep concern', '...with grave concern', '...with regret', '...with satisfaction', 'Observing', 'Reaffirming', 'Realizing', 'Recalling', 'Recognising', 'Regretting', 'Reiterating', 'Seeking', 'Stressing', 'Welcoming']
             
             
-            await ctx.channel.send('```Preambulatory phrases: '+preambs+'```')
+            await ctx.channel.send('```Preambulatory phrases: '+str(preambs)+'```')
         
 def setup(bot):
     bot.add_cog(Delegate(bot))
