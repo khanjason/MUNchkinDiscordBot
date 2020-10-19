@@ -9,6 +9,7 @@ class Chair(commands.Cog):
         self.session={}
         self.delegate=self.bot.get_cog('Delegate')
         self.general_speakers=defaultdict(list)
+        self.register = defaultdict(dict)
         
     @commands.has_role('Committee')
     @commands.command()
@@ -18,6 +19,7 @@ class Chair(commands.Cog):
             self.delegate.session[ctx.guild.id]=True
             self.delegate.general_speakers[ctx.guild.id]=[]
         self.general_speakers[ctx.guild.id]=[]
+        self.register[ctx.guild.id]={}
         await ctx.channel.send("Session has started!")
         
     @commands.has_role('Committee')
@@ -109,6 +111,28 @@ class Chair(commands.Cog):
                 await ctx.send("Unmod cancelled")
             except asyncio.TimeoutError:
                 await ctx.send(f"UnMod is over!")
+    @commands.has_role('Committee')
+    @commands.command(pass_context=True)
+    async def register(self,ctx,*,args):
+        if self.session[ctx.guild.id]==True:
+            args=args.split(' ')
+            member=args[0]
+            status= args[1]
+            dic=self.register[ctx.guild.id]
+            dic[member]=status
+            if status=='p':
+                await ctx.send(member+" is present!")
+            if status=='pv':
+                await ctx.send(member+" is present and voting!")
+            if status=='a':
+                await ctx.send(member+" is absent!")
+            else:
+                await ctx.send(member+"'s status was not understood!")
+
+                
+                
+            
+            
             
 
         
