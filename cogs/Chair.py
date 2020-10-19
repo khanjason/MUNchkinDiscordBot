@@ -133,7 +133,7 @@ class Chair(commands.Cog):
     async def viewRegister(self,ctx):
         if self.session[ctx.guild.id]==True:
             dic=self.register[ctx.guild.id]
-            await ctx.send("Register: "+dic)
+            await ctx.send("Register: "+str(dic))
             
 
                 
