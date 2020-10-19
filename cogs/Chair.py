@@ -116,7 +116,7 @@ class Chair(commands.Cog):
     async def register(self,ctx,*,args):
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
-            member=args[0]
+            member=args[0].lower()
             status= args[1]
             dic=self.register[ctx.guild.id]
             dic[member]=status
@@ -126,7 +126,7 @@ class Chair(commands.Cog):
                 await ctx.send(member+" is present and voting!")
             if status=='a':
                 await ctx.send(member+" is absent!")
-            else:
+            elif status not in ['p','pv','a']:
                 await ctx.send(member+"'s status was not understood!")
 
                 
