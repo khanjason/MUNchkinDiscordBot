@@ -39,6 +39,14 @@ class Delegate(commands.Cog):
             
             
             await ctx.channel.send('```Preambulatory phrases: '+str(preambs)+'```')
+    @commands.command()
+    async def operative(self,ctx):
+        if (self.session)[ctx.guild.id]==True:
+            operatives=["Accepts", 'Adopts', 'Affirms', 'Appeals', 'Appreciates', 'Approves', 'Authorises', 'Calls upon', 'Calls for', 'Concurs', 'Confirms', 'Congratulates', 'Considers', 'Declares', 'Deplores', 'Designates', 'Directs', 'Emphasizes', 'Encourages', 'Endorses', 'Expresses', 'Instructs', 'Invites', 'Proclaims', 'Reaffirms', '...its belief', 'Recognises', 'Recommends', 'Regrets', 'Repeats', 'Requests', 'Suggests', 'Supports', 'Takes note of', 'Transmits', 'Urges', 'Welcomes']
+
+            
+            await ctx.channel.send('```operative phrases: '+str(operatives)+'```')
+
         
 def setup(bot):
     bot.add_cog(Delegate(bot))
