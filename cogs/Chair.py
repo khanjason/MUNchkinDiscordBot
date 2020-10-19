@@ -121,13 +121,20 @@ class Chair(commands.Cog):
             dic=self.register[ctx.guild.id]
             dic[member]=status
             if status=='p':
-                await ctx.send(member+" is present!")
+                await ctx.send(member.title()+" is present!")
             if status=='pv':
-                await ctx.send(member+" is present and voting!")
+                await ctx.send(member.title()+" is present and voting!")
             if status=='a':
-                await ctx.send(member+" is absent!")
+                await ctx.send(member.title()+" is absent!")
             elif status not in ['p','pv','a']:
                 await ctx.send(member+"'s status was not understood!")
+    @commands.has_role('Committee')
+    @commands.command(pass_context=True)
+    async def viewRegister(self,ctx):
+        if self.session[ctx.guild.id]==True:
+            dic=self.register[ctx.guild.id]
+            await ctx.send("Register: "+dic)
+            
 
                 
                 
