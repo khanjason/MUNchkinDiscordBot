@@ -44,7 +44,7 @@ class Chair(commands.Cog):
     async def popGS(self, ctx):
         if self.session[ctx.guild.id]==True:            
                 t=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id].pop()
-                self.general_speakers=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id].pop()
+                self.general_speakers=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]
                                 
                 await ctx.channel.send(str(t)+' was removed from the GS list.')
                 
