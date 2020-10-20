@@ -8,7 +8,7 @@ class Chair(commands.Cog):
         self.bot = bot
         self.session={}
         self.delegate=self.bot.get_cog('Delegate')
-        self.general_speakers=defaultdict(list)
+        self.general_speakers={}
         self.register = defaultdict(dict)
         
     @commands.has_role('Committee')
