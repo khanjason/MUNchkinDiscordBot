@@ -30,7 +30,7 @@ class Chair(commands.Cog):
             self.delegate.session[ctx.guild.id]=False
             self.delegate.general_speakers[ctx.guild.id]=[]
         
-        self.general_speakers[ctx.guild.id]=[]
+        
         await ctx.channel.send("Session has ended!")
         
     @commands.has_role('Committee')  
