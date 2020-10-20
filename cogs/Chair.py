@@ -39,6 +39,16 @@ class Chair(commands.Cog):
                 
                 await ctx.channel.send("General Speakers List: ")
                 await ctx.channel.send(self.bot.get_cog('Delegate').general_speakers[ctx.guild.id])
+    @commands.has_role('Committee')  
+    @commands.command()
+    async def popGS(self, ctx):
+        if self.session[ctx.guild.id]==True:            
+                t=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id].pop()
+                self.general_speakers=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id].pop()
+                                
+                await ctx.channel.send(str(t)+' was removed from the GS list.')
+                
+
 
     @commands.has_role('Committee')
     @commands.command(pass_context=True)
