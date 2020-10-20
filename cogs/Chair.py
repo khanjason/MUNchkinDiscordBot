@@ -19,7 +19,8 @@ class Chair(commands.Cog):
             self.delegate.session[ctx.guild.id]=True
             self.delegate.general_speakers[ctx.guild.id]=[]
         else:
-            self.general_speakers[ctx.guild.id]=[]
+            t=[]
+            self.general_speakers[ctx.guild.id]=t
         self.register[ctx.guild.id]={}
         await ctx.channel.send("Session has started!")
         
