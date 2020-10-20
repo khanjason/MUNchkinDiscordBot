@@ -29,7 +29,7 @@ class Chair(commands.Cog):
         if self.delegate is not None:
             self.delegate.session[ctx.guild.id]=False
             self.delegate.general_speakers[ctx.guild.id]=[]
-        if self.general_speakers[ctx.guild.id]:
+        if ctx.guild.id in self.general_speakers.keys():
             self.general_speakers[ctx.guild.id]=[]
         await ctx.channel.send("Session has ended!")
         
