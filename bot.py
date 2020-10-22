@@ -13,6 +13,7 @@ bot = commands.Bot(command_prefix="!")
 @bot.command()
 async def load(ctx,extension):
     bot.load_extension(f'cogs.{extension}')
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="the United Nations"))
     
 @bot.command()
 async def unload(ctx,extension):
@@ -23,5 +24,5 @@ for filename in os.listdir('./cogs'):
         bot.load_extension(f'cogs.{filename[:-3]}')
         
     
-await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="the United Nations"))
+
 bot.run(DISCORD_TOKEN)
