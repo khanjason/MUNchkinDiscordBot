@@ -23,5 +23,5 @@ for filename in os.listdir('./cogs'):
         bot.load_extension(f'cogs.{filename[:-3]}')
         
     
-
+await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="the United Nations"))
 bot.run(DISCORD_TOKEN)
