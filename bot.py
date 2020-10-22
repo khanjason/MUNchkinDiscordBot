@@ -10,10 +10,15 @@ DISCORD_TOKEN = os.getenv('BOT_TOKEN')
 
 bot = commands.Bot(command_prefix="!")
 
+@bot.event
+async def on_ready():
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="the United Nations"))
+
+
 @bot.command()
 async def load(ctx,extension):
     bot.load_extension(f'cogs.{extension}')
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="the United Nations"))
+    
     
 @bot.command()
 async def unload(ctx,extension):
