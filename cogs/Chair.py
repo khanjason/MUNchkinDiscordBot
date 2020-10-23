@@ -149,6 +149,18 @@ class Chair(commands.Cog):
             dic=self.register[ctx.guild.id]
             await ctx.send("Register: "+str(dic))
             
+    @commands.has_role('Committee')
+    @commands.command(pass_context=True)
+    async def voting(self, ctx,*,args):
+        if self.session[ctx.guild.id]==True:
+                args=args.split(' ')
+                topic=args[0]
+                
+                        
+                m = await ctx.channel.send('Final voting: '+topic)
+                await m.add_reaction("\U0001F44D")
+                await m.add_reaction("\U0001F44E")
+                
 
                 
                 
