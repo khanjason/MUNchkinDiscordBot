@@ -154,7 +154,7 @@ class Chair(commands.Cog):
     async def voting(self, ctx,*,args):
         if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
-                topic=args[0]
+                topic=args[0:]
                 
                         
                 m = await ctx.channel.send('Final voting: '+topic)
