@@ -65,7 +65,7 @@ class Chair(commands.Cog):
                 def check(message):
                     return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
                 try:
-                    m = await self.bot.wait_for("message", check=check, timeout=(t*60-10))
+                    m = await self.bot.wait_for("message", check=check, timeout=(t-10))
                     await ctx.send("Cancelled")
                 except asyncio.TimeoutError:
                     await ctx.send("10 seconds left, "+u)
