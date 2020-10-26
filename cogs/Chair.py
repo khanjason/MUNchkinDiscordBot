@@ -171,7 +171,7 @@ class Chair(commands.Cog):
                 t=''
                 if v=='p':
                     t='Present'
-                if v=='pv:
+                if v=='pv':
                     t='Present and Voting'
                 if v=='a':
                     t='Absent'
