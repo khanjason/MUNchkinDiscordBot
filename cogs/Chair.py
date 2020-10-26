@@ -43,7 +43,7 @@ class Chair(commands.Cog):
                 for country in self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]:
                     embedVar.add_field(name="Country:", value=country, inline=False)
         
-                await message.channel.send(embed=embedVar)
+                await ctx.channel.send(embed=embedVar)
                 #await ctx.channel.send("General Speakers List: ")
                 #await ctx.channel.send(self.bot.get_cog('Delegate').general_speakers[ctx.guild.id])
     @commands.has_role('Chair')  
