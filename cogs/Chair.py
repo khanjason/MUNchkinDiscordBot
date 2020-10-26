@@ -44,8 +44,7 @@ class Chair(commands.Cog):
                     embedVar.add_field(name="Country:", value=country, inline=False)
         
                 await ctx.channel.send(embed=embedVar)
-                #await ctx.channel.send("General Speakers List: ")
-                #await ctx.channel.send(self.bot.get_cog('Delegate').general_speakers[ctx.guild.id])
+                
     @commands.has_role('Chair')  
     @commands.command()
     async def popGS(self, ctx):
@@ -90,14 +89,24 @@ class Chair(commands.Cog):
                         speaking=args[2]
                         country=args[3]
                         topic=' '.join(word for word in args[4:])
+                        embedVar = discord.Embed(title="Proposal", description="A motion has been proposed.", color=discord.Color.from_rgb(78,134,219))
                         
-                        m = await ctx.channel.send(country+" proposed a "+type+' caucus on '+topic+' for '+total+' mins with '+speaking+ ' seconds speakers time.')
+                        embedVar.add_field(name="Proposed Caucus:", value=type, inline=False)
+                        embedVar.add_field(name="Topic:", value=topic, inline=False)
+                        embedVar.add_field(name="Country:", value=country, inline=False)
+                        embedVar.add_field(name="Speaking Time (seconds):", value=speaking, inline=False)
+                        embedVar.add_field(name="Total Time (minutes):", value=total, inline=False)
+                        m= await ctx.channel.send(embed=embedVar)
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
                 else:
                         total=args[1]
                         country=args[2]
-                        m = await ctx.channel.send(country+" proposed a "+type+' caucus for '+total+' mins.')
+                        embedVar = discord.Embed(title="Proposal", description="A motion has been proposed.", color=discord.Color.from_rgb(78,134,219))
+                        embedVar.add_field(name="Proposed Caucus:", value=type, inline=False)
+                        embedVar.add_field(name="Country:", value=country, inline=False)
+                        embedVar.add_field(name="Total Time (minutes):", value=total, inline=False)
+                        m= await ctx.channel.send(embed=embedVar)
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
     @commands.has_role('Chair')
@@ -159,9 +168,10 @@ class Chair(commands.Cog):
         if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
                 topic=' '.join(word for word in args)
-                
-                        
-                m = await ctx.channel.send('Final voting: '+topic)
+                embedVar = discord.Embed(title="Voting", description="A vote is in progress.", color=discord.Color.from_rgb(78,134,219))
+                embedVar.add_field(name="Topic:", value=topic, inline=False)
+
+                m= await ctx.channel.send(embed=embedVar)
                 await m.add_reaction("\U0001F44D")
                 await m.add_reaction("\U0001F44E")
                 
