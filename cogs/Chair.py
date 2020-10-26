@@ -166,7 +166,20 @@ class Chair(commands.Cog):
     async def viewRegister(self,ctx):
         if self.session[ctx.guild.id]==True:
             dic=self.register[ctx.guild.id]
-            await ctx.send("Register: "+str(dic))
+            embedVar = discord.Embed(title="Register", description="All registered delegates.", color=discord.Color.from_rgb(78,134,219))
+            for k,v in dic.items():
+                t=''
+                if v=='p':
+                    t='Present'
+                if v=='pv':
+                    t='Present and Voting'
+                if v=='a':
+                    t='Absent'
+                embedVar.add_field(name=k, value=t, inline=False)
+
+            await ctx.channel.send(embed=embedVar)
+            
+            
             
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Start a vote.', description='Starts a non-caucus vote. Useful for final vote or amendments.\n Requires !voting [topic]')
