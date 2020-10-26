@@ -12,7 +12,7 @@ class Chair(commands.Cog):
         self.register = defaultdict(dict)
         
     @commands.has_role('Chair')
-    @commands.command()
+    @commands.command(brief='Starts a session.', description='Enables all commands for a session and invites bot to voice channel.')
     async def startSession(self, ctx):
         self.session[ctx.guild.id]=True
         if self.delegate is not None:
@@ -28,7 +28,7 @@ class Chair(commands.Cog):
         await ctx.channel.send("Session has started!")
         
     @commands.has_role('Chair')
-    @commands.command()
+    @commands.command(brief='Ends the current Session.', description='Disables session commands and disconnects bot from voice channel.\n Clears GS list.')
     async def endSession(self, ctx):
         self.session[ctx.guild.id]=False
         if self.delegate is not None:
@@ -42,7 +42,7 @@ class Chair(commands.Cog):
         await ctx.channel.send("Session has ended!")
         
     @commands.has_role('Chair')  
-    @commands.command()
+    @commands.command(brief='View the general speakers list.', description='Prints out the current general speakers list.')
     async def GS(self, ctx):
         if self.session[ctx.guild.id]==True:
                 embedVar = discord.Embed(title="General Speakers List", description="General Speakers.", color=discord.Color.from_rgb(78,134,219))
@@ -52,7 +52,7 @@ class Chair(commands.Cog):
                 await ctx.channel.send(embed=embedVar)
                 
     @commands.has_role('Chair')  
-    @commands.command()
+    @commands.command(brief='Removes first delegate from general speakers list.', description='Remove first delegate from general speakers list.\n Used just after a speaker has finished.')
     async def popGS(self, ctx):
         if self.session[ctx.guild.id]==True:
                 t=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][0]
@@ -64,7 +64,7 @@ class Chair(commands.Cog):
 
 
     @commands.has_role('Chair')
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True,brief='Yields the floor to a delegate.', description='Needs [delegate name] [time in seconds] and starts a timer.')
     async def speak(self,ctx, *,args):
         if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
@@ -85,7 +85,7 @@ class Chair(commands.Cog):
                         await ctx.send("Time is up, "+u+'!')
                 
     @commands.has_role('Chair')
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True,brief='Proposes a caucus.', description='requires [type].\n If type is mod, structure is !propose mod [total time in min] [speakers time in sec] [country proposed] [topic].\n If other type, requires [type] [total time in min] [country proposed].')
     async def propose(self, ctx,*,args):
         if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
@@ -116,7 +116,7 @@ class Chair(commands.Cog):
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
     @commands.has_role('Chair')
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True,brief='Starts a moderated caucus.', description='Requires !mod [total time in min].\n Starts a timer.')
     async def mod(self,ctx, *,args):
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
@@ -131,7 +131,7 @@ class Chair(commands.Cog):
                 await ctx.send(f"Mod is over!")
                 
     @commands.has_role('Chair')
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True,brief='Starts a unmoderated caucus.', description='Requires !unmod [total time in min].\n Starts a timer.')
     async def unmod(self,ctx, *,args):
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
@@ -145,7 +145,7 @@ class Chair(commands.Cog):
             except asyncio.TimeoutError:
                 await ctx.send(f"UnMod is over!")
     @commands.has_role('Chair')
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True,brief='Register a delegate.', description='Requires !register [delegate name] [status].\n Status can be present (p),present and voting(pv) or absent (a)')
     async def register(self,ctx,*,args):
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
@@ -162,14 +162,14 @@ class Chair(commands.Cog):
             elif status not in ['p','pv','a']:
                 await ctx.send(member+"'s status was not understood!")
     @commands.has_role('Chair')
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True,brief='View the register.', description='Displays all registered delegations and their statuses.')
     async def viewRegister(self,ctx):
         if self.session[ctx.guild.id]==True:
             dic=self.register[ctx.guild.id]
             await ctx.send("Register: "+str(dic))
             
     @commands.has_role('Chair')
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True,brief='Start a vote.', description='Starts a non-caucus vote. Useful for final vote or amendments.\n Requires !voting [topic]')
     async def voting(self, ctx,*,args):
         if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
