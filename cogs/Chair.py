@@ -52,7 +52,7 @@ class Chair(commands.Cog):
         if self.session[ctx.guild.id]==True:
                 t=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][0]
                 self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][1:]
-                self.general_speakers=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]
+                self.general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]
                                 
                 await ctx.channel.send(str(t)+' was removed from the GS list.')
                 
