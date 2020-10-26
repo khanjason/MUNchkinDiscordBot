@@ -37,7 +37,8 @@ class Chair(commands.Cog):
         
         connected = ctx.author.voice
         if connected:
-            await connected.channel.disconnect()         
+            server=ctx.message.guild.voice_client
+            await server.disconnect()
         await ctx.channel.send("Session has ended!")
         
     @commands.has_role('Chair')  
