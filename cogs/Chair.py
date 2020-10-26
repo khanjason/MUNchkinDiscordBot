@@ -11,7 +11,7 @@ class Chair(commands.Cog):
         self.general_speakers={}
         self.register = defaultdict(dict)
         
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command()
     async def startSession(self, ctx):
         self.session[ctx.guild.id]=True
@@ -24,7 +24,7 @@ class Chair(commands.Cog):
         self.register[ctx.guild.id]={}
         await ctx.channel.send("Session has started!")
         
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command()
     async def endSession(self, ctx):
         self.session[ctx.guild.id]=False
@@ -35,14 +35,14 @@ class Chair(commands.Cog):
         
         await ctx.channel.send("Session has ended!")
         
-    @commands.has_role('Committee')  
+    @commands.has_role('Chair')  
     @commands.command()
     async def GS(self, ctx):
         if self.session[ctx.guild.id]==True:
                 
                 await ctx.channel.send("General Speakers List: ")
                 await ctx.channel.send(self.bot.get_cog('Delegate').general_speakers[ctx.guild.id])
-    @commands.has_role('Committee')  
+    @commands.has_role('Chair')  
     @commands.command()
     async def popGS(self, ctx):
         if self.session[ctx.guild.id]==True:
@@ -54,7 +54,7 @@ class Chair(commands.Cog):
                 
 
 
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True)
     async def speak(self,ctx, *,args):
         if self.session[ctx.guild.id]==True:
@@ -75,7 +75,7 @@ class Chair(commands.Cog):
                     except asyncio.TimeoutError:
                         await ctx.send("Time is up, "+u+'!')
                 
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True)
     async def propose(self, ctx,*,args):
         if self.session[ctx.guild.id]==True:
@@ -96,7 +96,7 @@ class Chair(commands.Cog):
                         m = await ctx.channel.send(country+" proposed a "+type+' caucus for '+total+' mins.')
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True)
     async def mod(self,ctx, *,args):
         if self.session[ctx.guild.id]==True:
@@ -111,7 +111,7 @@ class Chair(commands.Cog):
             except asyncio.TimeoutError:
                 await ctx.send(f"Mod is over!")
                 
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True)
     async def unmod(self,ctx, *,args):
         if self.session[ctx.guild.id]==True:
@@ -125,7 +125,7 @@ class Chair(commands.Cog):
                 await ctx.send("Unmod cancelled")
             except asyncio.TimeoutError:
                 await ctx.send(f"UnMod is over!")
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True)
     async def register(self,ctx,*,args):
         if self.session[ctx.guild.id]==True:
@@ -142,14 +142,14 @@ class Chair(commands.Cog):
                 await ctx.send(member.title()+" is absent!")
             elif status not in ['p','pv','a']:
                 await ctx.send(member+"'s status was not understood!")
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True)
     async def viewRegister(self,ctx):
         if self.session[ctx.guild.id]==True:
             dic=self.register[ctx.guild.id]
             await ctx.send("Register: "+str(dic))
             
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True)
     async def voting(self, ctx,*,args):
         if self.session[ctx.guild.id]==True:
