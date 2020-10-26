@@ -39,16 +39,20 @@ class Chair(commands.Cog):
     @commands.command()
     async def GS(self, ctx):
         if self.session[ctx.guild.id]==True:
-                
-                await ctx.channel.send("General Speakers List: ")
-                await ctx.channel.send(self.bot.get_cog('Delegate').general_speakers[ctx.guild.id])
+                embedVar = discord.Embed(title="General Speakers List", description="General Speakers.", color=discord.Color.from_rgb(78,134,219))
+                for country in self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]:
+                    embedVar.add_field(name="Country:", value=country, inline=False)
+        
+                await ctx.channel.send(embed=embedVar)
+                #await ctx.channel.send("General Speakers List: ")
+                #await ctx.channel.send(self.bot.get_cog('Delegate').general_speakers[ctx.guild.id])
     @commands.has_role('Chair')  
     @commands.command()
     async def popGS(self, ctx):
         if self.session[ctx.guild.id]==True:
                 t=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][0]
                 self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][1:]
-                self.general_speakers=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]
+                self.general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]
                                 
                 await ctx.channel.send(str(t)+' was removed from the GS list.')
                 
