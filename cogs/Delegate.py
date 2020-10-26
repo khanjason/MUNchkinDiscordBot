@@ -41,7 +41,7 @@ class Delegate(commands.Cog):
             t=''
             for p in preambs:
                 t=t+p+'\n'
-            embedVar.add_field(name="", value=t, inline=False)
+            embedVar.add_field(name="Phrases:", value=t, inline=False)
             
             await ctx.channel.send(embed=embedVar)
     @commands.command(brief='Lists operative phrases.', description='Displays list of phrases, useful for operative clauses.')
@@ -52,7 +52,7 @@ class Delegate(commands.Cog):
             t=''
             for o in operatives:
                 t=t+o+'\n'
-            embedVar.add_field(name="", value=t, inline=False)
+            embedVar.add_field(name="Phrases:", value=t, inline=False)
             
             await ctx.channel.send(embed=embedVar)
             
