@@ -39,9 +39,13 @@ class Chair(commands.Cog):
     @commands.command()
     async def GS(self, ctx):
         if self.session[ctx.guild.id]==True:
-                
-                await ctx.channel.send("General Speakers List: ")
-                await ctx.channel.send(self.bot.get_cog('Delegate').general_speakers[ctx.guild.id])
+                embedVar = discord.Embed(title="General Speakers List", description="General Speakers.", color=0x00ff00)
+                for country in general_speakers[ctx.guild.id]:
+                    embedVar.add_field(name="Country:", value=country, inline=False)
+        
+                await message.channel.send(embed=embedVar)
+                #await ctx.channel.send("General Speakers List: ")
+                #await ctx.channel.send(self.bot.get_cog('Delegate').general_speakers[ctx.guild.id])
     @commands.has_role('Chair')  
     @commands.command()
     async def popGS(self, ctx):
