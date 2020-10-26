@@ -40,7 +40,7 @@ class Chair(commands.Cog):
     async def GS(self, ctx):
         if self.session[ctx.guild.id]==True:
                 embedVar = discord.Embed(title="General Speakers List", description="General Speakers.", color=0x00ff00)
-                for country in general_speakers[ctx.guild.id]:
+                for country in self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]:
                     embedVar.add_field(name="Country:", value=country, inline=False)
         
                 await message.channel.send(embed=embedVar)
