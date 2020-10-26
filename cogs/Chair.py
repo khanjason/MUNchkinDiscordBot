@@ -22,6 +22,9 @@ class Chair(commands.Cog):
             t=[]
             self.general_speakers[ctx.guild.id]=t
         self.register[ctx.guild.id]={}
+        connected = ctx.author.voice
+        if connected:
+            await connected.channel.connect() 
         await ctx.channel.send("Session has started!")
         
     @commands.has_role('Chair')
@@ -32,7 +35,10 @@ class Chair(commands.Cog):
             self.delegate.session[ctx.guild.id]=False
             self.delegate.general_speakers[ctx.guild.id]=[]
         
-        
+        connected = ctx.author.voice
+        if connected:
+            server=ctx.message.guild.voice_client
+            await server.disconnect()
         await ctx.channel.send("Session has ended!")
         
     @commands.has_role('Chair')  
