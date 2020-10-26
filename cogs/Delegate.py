@@ -46,6 +46,14 @@ class Delegate(commands.Cog):
 
             
             await ctx.channel.send('```operative phrases: '+str(operatives)+'```')
+    @commands.command()
+    async def tap(self,ctx):
+        if (self.session)[ctx.guild.id]==True:
+            country=str(ctx.author.nick)
+            embedVar = discord.Embed(title="Tap Tap!", description=country+" concurs!", color=discord.Color.from_rgb(78,134,219))
+                        
+            
+            m= await ctx.channel.send(embed=embedVar)
 
         
 def setup(bot):
