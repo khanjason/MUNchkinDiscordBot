@@ -37,15 +37,26 @@ class Delegate(commands.Cog):
             preambs=["Acknowledging", 'Affirming', 'Alarmed', 'Anxious', 'Approving', 'Aware','Bearing in mind', 'Believing', 'Concerned', 'Confident', 'Conscious', 'Considering', 'Convinced', 'Disturbed', 'Determined', 'Emphasizing', 'Encouraged', 'Endorsing', 'Expressing', 'Guided by', 'Having ...adopted', '...approved', '...considered', '...examined further', '...received', '...reviewed', 'Keeping in mind', 'Mindful', 'Noting',
 '...with approval', '...with concern', '...with deep concern', '...with grave concern', '...with regret', '...with satisfaction', 'Observing', 'Reaffirming', 'Realizing', 'Recalling', 'Recognising', 'Regretting', 'Reiterating', 'Seeking', 'Stressing', 'Welcoming']
             
+            embedVar = discord.Embed(title="Preamble Phrases:", description="List of preambulatory phrases.", color=discord.Color.from_rgb(78,134,219))
+            t=''
+            for p in preambs:
+                t=t+p+'\n'
+            embedVar.add_field(name="Phrases:", value=t, inline=False)
             
-            await ctx.channel.send('```Preambulatory phrases: '+str(preambs)+'```')
+            await ctx.channel.send(embed=embedVar)
     @commands.command(brief='Lists operative phrases.', description='Displays list of phrases, useful for operative clauses.')
     async def operative(self,ctx):
         if (self.session)[ctx.guild.id]==True:
             operatives=["Accepts", 'Adopts', 'Affirms', 'Appeals', 'Appreciates', 'Approves', 'Authorises', 'Calls upon', 'Calls for', 'Concurs', 'Confirms', 'Congratulates', 'Considers', 'Declares', 'Deplores', 'Designates', 'Directs', 'Emphasizes', 'Encourages', 'Endorses', 'Expresses', 'Instructs', 'Invites', 'Proclaims', 'Reaffirms', '...its belief', 'Recognises', 'Recommends', 'Regrets', 'Repeats', 'Requests', 'Suggests', 'Supports', 'Takes note of', 'Transmits', 'Urges', 'Welcomes']
-
+            embedVar = discord.Embed(title="Operative Phrases:", description="List of operative phrases.", color=discord.Color.from_rgb(78,134,219))
+            t=''
+            for o in operatives:
+                t=t+o+'\n'
+            embedVar.add_field(name="Phrases:", value=t, inline=False)
             
-            await ctx.channel.send('```operative phrases: '+str(operatives)+'```')
+            await ctx.channel.send(embed=embedVar)
+            
+            
     @commands.command(brief='Tap in support.', description='Alerts that you support the current debate.')
     async def tap(self,ctx):
         if (self.session)[ctx.guild.id]==True:
