@@ -82,6 +82,11 @@ class Chair(commands.Cog):
                         m = await self.bot.wait_for("message", check=check, timeout=(10))
                         await ctx.send("Cancelled")
                     except asyncio.TimeoutError:
+                        voice_channel = ctx.voice_client
+                        
+                        
+                        voice_channel.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio('./../sounds/gavel.wav')))
+           
                         await ctx.send("Time is up, "+u+'!')
                 
     @commands.has_role('Chair')
@@ -128,6 +133,8 @@ class Chair(commands.Cog):
                 m = await self.bot.wait_for("message", check=check, timeout=t*60)
                 await ctx.send("mod cancelled")
             except asyncio.TimeoutError:
+                voice_channel = ctx.voice_client   
+                voice_channel.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio('./../sounds/gavel.wav')))
                 await ctx.send(f"Mod is over!")
                 
     @commands.has_role('Chair')
@@ -143,6 +150,8 @@ class Chair(commands.Cog):
                 m = await self.bot.wait_for("message", check=check, timeout=t*60)
                 await ctx.send("Unmod cancelled")
             except asyncio.TimeoutError:
+                voice_channel = ctx.voice_client   
+                voice_channel.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio('./../sounds/gavel.wav')))
                 await ctx.send(f"UnMod is over!")
     @commands.has_role('Chair')
     @commands.command(pass_context=True)
