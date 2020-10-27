@@ -77,7 +77,7 @@ Displays list of phrases, useful for operative clauses.
 ```
 
 
-##Contributing
+## Contributing
 Contributions are not open at this stage. Come back soon for updates, star and watch this repository.
 
 ## License
