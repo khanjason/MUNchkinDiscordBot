@@ -200,7 +200,7 @@ class Chair(commands.Cog):
 
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Give Chair role.', description='Gives chair role to another member.\n Requires !chair [@member]')
-    async def chair(self, ctx,user: discord.User):
+    async def chair(self, ctx,user: discord.Member):
         
         member = user
         role = get(ctx.message.author.server.roles, name="Chair")
