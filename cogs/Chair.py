@@ -3,6 +3,7 @@ import time
 import asyncio
 from collections import defaultdict
 from discord.ext import commands, tasks
+from discord.utils import get
 class Chair(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
