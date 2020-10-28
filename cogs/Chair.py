@@ -199,11 +199,15 @@ class Chair(commands.Cog):
 
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Give Chair role.', description='Gives chair role to another member.\n Requires !chair [@member]')
-    async def chair(self, ctx,*,args):
+    async def chair(self, ctx,user: discord.User):
         
-        member = ctx.mentions[0]
+        member = user
         role = get(member.server.roles, name="Chair")
         await bot.add_roles(member, role)
+        embedVar = discord.Embed(title="Chair Role", description="Role was given to"+str(member), color=discord.Color.from_rgb(78,134,219))
+    
+
+        m= await ctx.channel.send(embed=embedVar)
         
             
             
