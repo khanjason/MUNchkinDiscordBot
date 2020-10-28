@@ -205,7 +205,7 @@ class Chair(commands.Cog):
         member = user
         role = get(ctx.message.guild.roles, name="Chair")
         await member.add_roles(role)
-        embedVar = discord.Embed(title="Chair Role", description="Role was given to"+str(member), color=discord.Color.from_rgb(78,134,219))
+        embedVar = discord.Embed(title="Chair Role", description="Role was given to "+str(member), color=discord.Color.from_rgb(78,134,219))
     
 
         m= await ctx.channel.send(embed=embedVar)
