@@ -23,6 +23,7 @@ class Delegate(commands.Cog):
                     if ctx.author.nick!=None:
                         tmp.append(str(ctx.author.nick))
                     else:
+                        print(ctx.author)
                         tmp.append(str(ctx.author))
                     self.general_speakers[ctx.guild.id]=tmp
                     await ctx.channel.send(ctx.author.mention+' has been added to the General Speakers List!')
