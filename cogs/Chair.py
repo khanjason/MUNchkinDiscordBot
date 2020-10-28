@@ -197,13 +197,18 @@ class Chair(commands.Cog):
                 await m.add_reaction("\U0001F44E")
                 
 
-                
-                
-            
+    @commands.has_role('Chair')
+    @commands.command(pass_context=True,brief='Give Chair role.', description='Gives chair role to another member.\n Requires !chair [@member]')
+    async def chair(self, ctx,*,args):
+        
+        member = ctx.mentions[0]
+        role = get(member.server.roles, name="Chair")
+        await bot.add_roles(member, role)
+        
             
             
 
-        
+    
         
 def setup(bot):
     bot.add_cog(Chair(bot))
