@@ -203,7 +203,7 @@ class Chair(commands.Cog):
     async def chair(self, ctx,user: discord.Member):
         
         member = user
-        role = get(ctx.message.author.server.roles, name="Chair")
+        role = get(ctx.message.server.roles, name="Chair")
         await bot.add_roles(member, role)
         embedVar = discord.Embed(title="Chair Role", description="Role was given to"+str(member), color=discord.Color.from_rgb(78,134,219))
     
