@@ -3,6 +3,7 @@ import time
 import asyncio
 from collections import defaultdict
 from discord.ext import commands, tasks
+from discord.utils import get
 class Chair(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -197,13 +198,22 @@ class Chair(commands.Cog):
                 await m.add_reaction("\U0001F44E")
                 
 
-                
-                
-            
+    @commands.has_role('Chair')
+    @commands.command(pass_context=True,brief='Give Chair role.', description='Gives chair role to another member.\n Requires !chair [@member]')
+    async def chair(self, ctx,user: discord.Member):
+        
+        member = user
+        role = get(ctx.message.guild.roles, name="Chair")
+        await member.add_roles(role)
+        embedVar = discord.Embed(title="Chair Role", description="Role was given to "+str(member), color=discord.Color.from_rgb(78,134,219))
+    
+
+        m= await ctx.channel.send(embed=embedVar)
+        
             
             
 
-        
+    
         
 def setup(bot):
     bot.add_cog(Chair(bot))
