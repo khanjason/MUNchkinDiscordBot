@@ -48,12 +48,16 @@ class Chair(commands.Cog):
         if self.session[ctx.guild.id]==True:
                 embedVar = discord.Embed(title="General Speakers List", description="General Speakers.", color=discord.Color.from_rgb(78,134,219))
                 t=''
-                for country in self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]:
-                    t=t+country+'\n'
-                embedVar.add_field(name="Countries:", value=t, inline=False)
-        
-                await ctx.channel.send(embed=embedVar)
-                
+                if self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]==[]:
+                    embedVar = discord.Embed(title="General Speakers List", description="This list is empty.", color=discord.Color.from_rgb(78,134,219))
+                    await ctx.channel.send(embed=embedVar)
+                else:
+                    for country in self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]:
+                        t=t+country+'\n'
+                        embedVar.add_field(name="Countries:", value=t, inline=False)
+            
+                    await ctx.channel.send(embed=embedVar)
+                    
     @commands.has_role('Chair')  
     @commands.command(brief='Removes first delegate from general speakers list.', description='Remove first delegate from general speakers list.\n Used just after a speaker has finished.')
     async def popGS(self, ctx):
