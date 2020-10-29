@@ -67,7 +67,10 @@ class Delegate(commands.Cog):
     @commands.command(brief='Tap in support.', description='Alerts that you support the current debate.')
     async def tap(self,ctx):
         if (self.session)[ctx.guild.id]==True:
-            country=str(ctx.author.nick)
+            if ctx.author.nick!=None:
+                country=str(ctx.author.nick)
+            else:
+                country=str(ctx.author)
             embedVar = discord.Embed(title="Tap Tap!", description=country+" concurs!", color=discord.Color.from_rgb(78,134,219))
                         
             
