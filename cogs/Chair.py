@@ -15,7 +15,7 @@ class Chair(commands.Cog):
         self.player={}
         self.register = defaultdict(dict)
         
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(brief='Starts a session.', description='Enables all commands for a session and invites bot to voice channel.')
     async def startSession(self, ctx):
         self.session[ctx.guild.id]=True
@@ -31,7 +31,7 @@ class Chair(commands.Cog):
             await connected.channel.connect() 
         await ctx.channel.send("Session has started!")
         
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(brief='Ends the current Session.', description='Disables session commands and disconnects bot from voice channel.\n Clears GS list.')
     async def endSession(self, ctx):
         self.session[ctx.guild.id]=False
@@ -61,7 +61,7 @@ class Chair(commands.Cog):
             
                     await ctx.channel.send(embed=embedVar)
                     
-    @commands.has_role('Committee')  
+    @commands.has_role('Chair')  
     @commands.command(brief='Removes first delegate from general speakers list.', description='Remove first delegate from general speakers list.\n Used just after a speaker has finished.')
     async def popGS(self, ctx):
         if self.session[ctx.guild.id]==True:
@@ -73,7 +73,7 @@ class Chair(commands.Cog):
                 
 
 
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Yields the floor to a delegate.', description='Needs [delegate name] [time in seconds] and starts a timer.')
     async def speak(self,ctx, *,args):
         
@@ -94,22 +94,8 @@ class Chair(commands.Cog):
                         await ctx.send("Cancelled")
                     except asyncio.TimeoutError:
                         await ctx.send("Time is up, "+u+'!')
-                        voice_client=ctx.guild.voice_client
-                YDL_OPTIONS = {
-        'format': 'bestaudio',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
-        'outtmpl': 'song.%(ext)s',
-    }
-                with YoutubeDL(YDL_OPTIONS) as ydl:
-                    ydl.download([url])
-                voice_client.play(FFmpegPCMAudio("song.mp3"))
-                voice_client.is_playing()
-                
-    @commands.has_role('Committee')
+                                        
+    @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Proposes a caucus.', description='requires [type].\n If type is mod, structure is !propose mod [total time in min] [speakers time in sec] [country proposed] [topic].\n If other type, requires [type] [total time in min] [country proposed].')
     async def propose(self, ctx,*,args):
         if self.session[ctx.guild.id]==True:
@@ -140,7 +126,7 @@ class Chair(commands.Cog):
                         m= await ctx.channel.send(embed=embedVar)
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Starts a moderated caucus.', description='Requires !mod [total time in min].\n Starts a timer.')
     async def mod(self,ctx, *,args):
         url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
@@ -173,7 +159,7 @@ class Chair(commands.Cog):
                 
                 
                 
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Starts a unmoderated caucus.', description='Requires !unmod [total time in min].\n Starts a timer.')
     async def unmod(self,ctx, *,args):
         url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
@@ -202,7 +188,7 @@ class Chair(commands.Cog):
                     ydl.download([url])
                 voice_client.play(FFmpegPCMAudio("song.mp3"))
                 voice_client.is_playing()
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Register a delegate.', description='Requires !register [delegate name] [status].\n Status can be present (p),present and voting(pv) or absent (a)')
     async def register(self,ctx,*,args):
         if self.session[ctx.guild.id]==True:
@@ -219,7 +205,7 @@ class Chair(commands.Cog):
                 await ctx.send(member.title()+" is absent!")
             elif status not in ['p','pv','a']:
                 await ctx.send(member+"'s status was not understood!")
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='View the register.', description='Displays all registered delegations and their statuses.')
     async def viewRegister(self,ctx):
         if self.session[ctx.guild.id]==True:
@@ -239,7 +225,7 @@ class Chair(commands.Cog):
             
             
             
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Start a vote.', description='Starts a non-caucus vote. Useful for final vote or amendments.\n Requires !voting [topic]')
     async def voting(self, ctx,*,args):
         if self.session[ctx.guild.id]==True:
@@ -253,7 +239,7 @@ class Chair(commands.Cog):
                 await m.add_reaction("\U0001F44E")
                 
 
-    @commands.has_role('Committee')
+    @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Give Chair role.', description='Gives chair role to another member.\n Requires !chair [@member]')
     async def chair(self, ctx,user: discord.Member):
         
