@@ -152,7 +152,7 @@ class Chair(commands.Cog):
         'outtmpl': 'song.%(ext)s',
     }
                 with YoutubeDL(YDL_OPTIONS) as ydl:
-                    ydl.download(url, download=True)
+                    ydl.download([url])
                 voice_client.play(FFmpegPCMAudio("song.mp3"))
                 voice_client.is_playing()
                 
