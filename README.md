@@ -61,6 +61,9 @@ Starts a non-caucus vote. Useful for final vote or amendments.
 Disables session commands and disconnects bot from voice channel.
 Clears GS list.
 
+!chair [@member]
+Gives chair role to another member.
+
 Delegate Commands:
 
 !addGS
