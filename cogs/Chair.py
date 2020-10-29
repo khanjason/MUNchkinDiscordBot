@@ -140,7 +140,7 @@ class Chair(commands.Cog):
             except asyncio.TimeoutError:
                 await ctx.send(f"Mod is over!")
                 server=ctx.message.guild
-                voice_client=self.bot.voice_client_in(server)
+                voice_client=ctx.guild.voice_client
                 player=await voice_client.create_ytdl_player(url)
                 players[server.id]=player
                 player.start()
