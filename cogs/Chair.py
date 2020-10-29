@@ -4,7 +4,7 @@ import asyncio
 from collections import defaultdict
 from discord.ext import commands, tasks
 from discord.utils import get
-import youtube_dl
+import youtube_dl import YoutubeDL
 class Chair(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -139,11 +139,22 @@ class Chair(commands.Cog):
                 await ctx.send("mod cancelled")
             except asyncio.TimeoutError:
                 await ctx.send(f"Mod is over!")
-                server=ctx.message.guild
+                
                 voice_client=ctx.guild.voice_client
-                player=await voice_client.create_ytdl_player(url)
-                players[server.id]=player
-                player.start()
+                YDL_OPTIONS = {
+        'format': 'bestaudio',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+        'outtmpl': 'song.%(ext)s',
+    }
+                with YoutubeDL(Music.YDL_OPTIONS) as ydl:
+                    ydl.download(url, download=True)
+                voice_client.play(FFmpegPCMAudio("song.mp3"))
+                voice_client.is_playing()
+                
                 
                 
     @commands.has_role('Chair')
