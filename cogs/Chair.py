@@ -4,12 +4,14 @@ import asyncio
 from collections import defaultdict
 from discord.ext import commands, tasks
 from discord.utils import get
+import youtube_dl
 class Chair(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.session={}
         self.delegate=self.bot.get_cog('Delegate')
         self.general_speakers={}
+        self.player={}
         self.register = defaultdict(dict)
         
     @commands.has_role('Chair')
@@ -125,6 +127,7 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Starts a moderated caucus.', description='Requires !mod [total time in min].\n Starts a timer.')
     async def mod(self,ctx, *,args):
+        url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
             t=int(args[0])
@@ -136,6 +139,12 @@ class Chair(commands.Cog):
                 await ctx.send("mod cancelled")
             except asyncio.TimeoutError:
                 await ctx.send(f"Mod is over!")
+                server=ctx.message.guild
+                voice_client=self.bot.voice_client_in(server)
+                player=await voice_client.create_ytdl_player(url)
+                players[server.id]=player
+                player.start()
+                
                 
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Starts a unmoderated caucus.', description='Requires !unmod [total time in min].\n Starts a timer.')
