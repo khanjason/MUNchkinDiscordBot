@@ -45,7 +45,7 @@ class Chair(commands.Cog):
             await server.disconnect()
         await ctx.channel.send("Session has ended!")
         
-    @commands.has_role('Committee')  
+    @commands.has_role('Chair')  
     @commands.command(brief='View the general speakers list.', description='Prints out the current general speakers list.')
     async def GS(self, ctx):
         if self.session[ctx.guild.id]==True:
@@ -57,7 +57,7 @@ class Chair(commands.Cog):
                 else:
                     for country in self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]:
                         t=t+country+'\n'
-                        embedVar.add_field(name="Countries:", value=t, inline=False)
+                    embedVar.add_field(name="Countries:", value=t, inline=False)
             
                     await ctx.channel.send(embed=embedVar)
                     
