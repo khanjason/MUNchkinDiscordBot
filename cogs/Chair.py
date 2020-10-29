@@ -57,7 +57,7 @@ class Chair(commands.Cog):
                 else:
                     for country in self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]:
                         t=t+country+'\n'
-                        embedVar.add_field(name="Countries:", value=t, inline=False)
+                    embedVar.add_field(name="Countries:", value=t, inline=False)
             
                     await ctx.channel.send(embed=embedVar)
                     
@@ -94,21 +94,7 @@ class Chair(commands.Cog):
                         await ctx.send("Cancelled")
                     except asyncio.TimeoutError:
                         await ctx.send("Time is up, "+u+'!')
-                        voice_client=ctx.guild.voice_client
-                YDL_OPTIONS = {
-        'format': 'bestaudio',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
-        'outtmpl': 'song.%(ext)s',
-    }
-                with YoutubeDL(YDL_OPTIONS) as ydl:
-                    ydl.download([url])
-                voice_client.play(FFmpegPCMAudio("song.mp3"))
-                voice_client.is_playing()
-                
+                                        
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Proposes a caucus.', description='requires [type].\n If type is mod, structure is !propose mod [total time in min] [speakers time in sec] [country proposed] [topic].\n If other type, requires [type] [total time in min] [country proposed].')
     async def propose(self, ctx,*,args):
