@@ -1,15 +1,18 @@
 import discord
 import time
 import asyncio
+from discord import FFmpegPCMAudio
 from collections import defaultdict
 from discord.ext import commands, tasks
 from discord.utils import get
+from youtube_dl import YoutubeDL
 class Chair(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.session={}
         self.delegate=self.bot.get_cog('Delegate')
         self.general_speakers={}
+        self.player={}
         self.register = defaultdict(dict)
         
     @commands.has_role('Chair')
@@ -73,6 +76,7 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Yields the floor to a delegate.', description='Needs [delegate name] [time in seconds] and starts a timer.')
     async def speak(self,ctx, *,args):
+        
         if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
                 u=args[0]
@@ -90,6 +94,20 @@ class Chair(commands.Cog):
                         await ctx.send("Cancelled")
                     except asyncio.TimeoutError:
                         await ctx.send("Time is up, "+u+'!')
+                        voice_client=ctx.guild.voice_client
+                YDL_OPTIONS = {
+        'format': 'bestaudio',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+        'outtmpl': 'song.%(ext)s',
+    }
+                with YoutubeDL(YDL_OPTIONS) as ydl:
+                    ydl.download([url])
+                voice_client.play(FFmpegPCMAudio("song.mp3"))
+                voice_client.is_playing()
                 
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Proposes a caucus.', description='requires [type].\n If type is mod, structure is !propose mod [total time in min] [speakers time in sec] [country proposed] [topic].\n If other type, requires [type] [total time in min] [country proposed].')
@@ -125,6 +143,7 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Starts a moderated caucus.', description='Requires !mod [total time in min].\n Starts a timer.')
     async def mod(self,ctx, *,args):
+        url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
             t=int(args[0])
@@ -137,9 +156,27 @@ class Chair(commands.Cog):
             except asyncio.TimeoutError:
                 await ctx.send(f"Mod is over!")
                 
+                voice_client=ctx.guild.voice_client
+                YDL_OPTIONS = {
+        'format': 'bestaudio',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+        'outtmpl': 'song.%(ext)s',
+    }
+                with YoutubeDL(YDL_OPTIONS) as ydl:
+                    ydl.download([url])
+                voice_client.play(FFmpegPCMAudio("song.mp3"))
+                voice_client.is_playing()
+                
+                
+                
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Starts a unmoderated caucus.', description='Requires !unmod [total time in min].\n Starts a timer.')
     async def unmod(self,ctx, *,args):
+        url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
             t=int(args[0])
@@ -151,6 +188,20 @@ class Chair(commands.Cog):
                 await ctx.send("Unmod cancelled")
             except asyncio.TimeoutError:
                 await ctx.send(f"UnMod is over!")
+                voice_client=ctx.guild.voice_client
+                YDL_OPTIONS = {
+        'format': 'bestaudio',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+        'outtmpl': 'song.%(ext)s',
+    }
+                with YoutubeDL(YDL_OPTIONS) as ydl:
+                    ydl.download([url])
+                voice_client.play(FFmpegPCMAudio("song.mp3"))
+                voice_client.is_playing()
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Register a delegate.', description='Requires !register [delegate name] [status].\n Status can be present (p),present and voting(pv) or absent (a)')
     async def register(self,ctx,*,args):
