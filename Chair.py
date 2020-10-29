@@ -76,6 +76,7 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Yields the floor to a delegate.', description='Needs [delegate name] [time in seconds] and starts a timer.')
     async def speak(self,ctx, *,args):
+        
         if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
                 u=args[0]
@@ -175,6 +176,7 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Starts a unmoderated caucus.', description='Requires !unmod [total time in min].\n Starts a timer.')
     async def unmod(self,ctx, *,args):
+        url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
             t=int(args[0])
