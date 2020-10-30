@@ -80,6 +80,9 @@ Displays list of phrases, useful for operative clauses.
 
 !about
 Provides information about MUNchkin.
+
+!rules
+Provides simplified ruleset for Harvard style MUN.
 ```
 
 
