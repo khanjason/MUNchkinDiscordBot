@@ -35,7 +35,7 @@ class Chair(commands.Cog):
                 
             else:
                 await connected.channel.connect() 
-        await ctx.channel.send("Session has started!")
+                await ctx.channel.send("Session has started!")
         
     @commands.has_role('Chair')
     @commands.command(brief='Ends the current Session.', description='Disables session commands and disconnects bot from voice channel.\n Clears GS list.')
@@ -90,7 +90,12 @@ class Chair(commands.Cog):
         if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
                 u=str(args[0])
-                t=int(args[1])
+                try:
+                    t=int(args[1])
+                except ValueError:
+                            embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
+                            return
                 await ctx.send(u+" has the floor!")
                 def check(message):
                     return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
