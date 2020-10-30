@@ -4,7 +4,9 @@ A discord bot for Model United Nations.
 
 ## Installation
 
-MUNchkin is running on Heroku. The bot has not been made public at this moment.
+MUNchkin is running on Heroku. To add the bot to your own server, click [here](https://bit.ly/2TQ8hcp).
+Make sure MUNchkin has the correct roles needed to access any channels that it will use.
+The 'Chair' role is required to use Chair commands. Delegate commands can used by anyone.
 
 ## Commands
 
