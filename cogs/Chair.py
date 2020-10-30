@@ -71,11 +71,15 @@ class Chair(commands.Cog):
     @commands.command(brief='Removes first delegate from general speakers list.', description='Remove first delegate from general speakers list.\n Used just after a speaker has finished.')
     async def popGS(self, ctx):
         if self.session[ctx.guild.id]==True:
-                t=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][0]
-                self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][1:]
-                self.general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]
-                                
-                await ctx.channel.send(str(t)+' was removed from the GS list.')
+                if self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]==[]:
+                    embedVar = discord.Embed(title="Error", description="List is empty.", color=discord.Color.from_rgb(78,134,219))
+                    await ctx.channel.send(embed=embedVar)                    
+                else:
+                    t=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][0]
+                    self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][1:]
+                    self.general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]
+                                    
+                    await ctx.channel.send(str(t)+' was removed from the GS list.')
                 
 
 
@@ -151,7 +155,7 @@ class Chair(commands.Cog):
             except ValueError:
                             embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
                             m= await ctx.channel.send(embed=embedVar)
-
+                            return
             await ctx.send("The Mod has started!")
             def check(message):
                 return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
