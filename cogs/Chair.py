@@ -189,7 +189,7 @@ class Chair(commands.Cog):
             except ValueError:
                             embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
                             m= await ctx.channel.send(embed=embedVar)
-
+                            return
             await ctx.send("The UnMod has started!")
             def check(message):
                 return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
