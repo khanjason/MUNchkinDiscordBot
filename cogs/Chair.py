@@ -96,6 +96,10 @@ class Chair(commands.Cog):
                             embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
                             m= await ctx.channel.send(embed=embedVar)
                             return
+                except IndexError:
+                            embedVar = discord.Embed(title="Error", description="Not enough arguments. Please provide Delegate and Time.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
+                            return
                 await ctx.send(u+" has the floor!")
                 def check(message):
                     return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
