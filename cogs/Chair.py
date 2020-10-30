@@ -102,8 +102,12 @@ class Chair(commands.Cog):
                 args=args.split(' ')
                 type=args[0]
                 if type=='mod':
-                        total=int(args[1])
-                        speaking=int(args[2])
+                        try:
+                            total=int(args[1])
+                            speaking=int(args[2])
+                        except ValueError:
+                            embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
                         country=args[3]
                         topic=' '.join(word for word in args[4:])
                         embedVar = discord.Embed(title="Proposal", description="A motion has been proposed.", color=discord.Color.from_rgb(78,134,219))
