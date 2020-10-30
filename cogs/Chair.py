@@ -117,7 +117,7 @@ class Chair(commands.Cog):
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
                 else:
-                        total=args[1]
+                        total=int(args[1])
                         country=args[2]
                         embedVar = discord.Embed(title="Proposal", description="A motion has been proposed.", color=discord.Color.from_rgb(78,134,219))
                         embedVar.add_field(name="Proposed Caucus:", value=type, inline=False)
