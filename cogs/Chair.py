@@ -28,7 +28,13 @@ class Chair(commands.Cog):
         self.register[ctx.guild.id]={}
         connected = ctx.author.voice
         if connected:
-            await connected.channel.connect() 
+            voice_client = get(ctx.bot.voice_clients, guild=ctx.guild)
+            if voice_client and voice_client.is_connected():
+                embedVar = discord.Embed(title="Error", description="Bot is already in VC. Please disconnect bot from VC and try again.", color=discord.Color.from_rgb(78,134,219))
+                await ctx.channel.send(embed=embedVar)
+                
+            else:
+                await connected.channel.connect() 
         await ctx.channel.send("Session has started!")
         
     @commands.has_role('Chair')
@@ -121,7 +127,11 @@ class Chair(commands.Cog):
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
                 else:
-                        total=int(args[1])
+                        try:
+                            total=int(args[1])
+                        except ValueError:
+                            embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
                         country=args[2]
                         embedVar = discord.Embed(title="Proposal", description="A motion has been proposed.", color=discord.Color.from_rgb(78,134,219))
                         embedVar.add_field(name="Proposed Caucus:", value=type, inline=False)
@@ -136,7 +146,12 @@ class Chair(commands.Cog):
         url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
-            t=int(args[0])
+            try:
+                t=int(args[0])
+            except ValueError:
+                            embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
+
             await ctx.send("The Mod has started!")
             def check(message):
                 return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
@@ -169,7 +184,12 @@ class Chair(commands.Cog):
         url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
-            t=int(args[0])
+            try:
+                t=int(args[0])
+            except ValueError:
+                            embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
+
             await ctx.send("The UnMod has started!")
             def check(message):
                 return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
@@ -208,7 +228,8 @@ class Chair(commands.Cog):
             if status=='a':
                 await ctx.send(member.title()+" is absent!")
             elif status not in ['p','pv','a']:
-                await ctx.send(member+"'s status was not understood!")
+                embedVar = discord.Embed(title="Error", description="Not a valid registration status. Use p, pv or a.", color=discord.Color.from_rgb(78,134,219))
+                m= await ctx.channel.send(embed=embedVar)
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='View the register.', description='Displays all registered delegations and their statuses.')
     async def viewRegister(self,ctx):
