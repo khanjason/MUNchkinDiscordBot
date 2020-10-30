@@ -77,6 +77,9 @@ Displays list of phrases, useful for preambulatory clauses.
 
 !operative
 Displays list of phrases, useful for operative clauses.
+
+!about
+Provides information about MUNchkin.
 ```
 
 
