@@ -28,8 +28,14 @@ class Chair(commands.Cog):
         self.register[ctx.guild.id]={}
         connected = ctx.author.voice
         if connected:
-            await connected.channel.connect() 
-        await ctx.channel.send("Session has started!")
+            voice_client = get(ctx.bot.voice_clients, guild=ctx.guild)
+            if voice_client and voice_client.is_connected():
+                embedVar = discord.Embed(title="Error", description="Bot is already in VC. Please disconnect bot from VC and try again.", color=discord.Color.from_rgb(78,134,219))
+                await ctx.channel.send(embed=embedVar)
+                
+            else:
+                await connected.channel.connect() 
+                await ctx.channel.send("Session has started!")
         
     @commands.has_role('Chair')
     @commands.command(brief='Ends the current Session.', description='Disables session commands and disconnects bot from voice channel.\n Clears GS list.')
@@ -65,11 +71,15 @@ class Chair(commands.Cog):
     @commands.command(brief='Removes first delegate from general speakers list.', description='Remove first delegate from general speakers list.\n Used just after a speaker has finished.')
     async def popGS(self, ctx):
         if self.session[ctx.guild.id]==True:
-                t=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][0]
-                self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][1:]
-                self.general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]
-                                
-                await ctx.channel.send(str(t)+' was removed from the GS list.')
+                if self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]==[]:
+                    embedVar = discord.Embed(title="Error", description="List is empty.", color=discord.Color.from_rgb(78,134,219))
+                    await ctx.channel.send(embed=embedVar)                    
+                else:
+                    t=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][0]
+                    self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][1:]
+                    self.general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]
+                                    
+                    await ctx.channel.send(str(t)+' was removed from the GS list.')
                 
 
 
@@ -80,7 +90,16 @@ class Chair(commands.Cog):
         if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
                 u=str(args[0])
-                t=int(args[1])
+                try:
+                    t=int(args[1])
+                except ValueError:
+                            embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
+                            return
+                except IndexError:
+                            embedVar = discord.Embed(title="Error", description="Not enough arguments. Please provide Delegate and Time.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
+                            return
                 await ctx.send(u+" has the floor!")
                 def check(message):
                     return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
@@ -121,7 +140,11 @@ class Chair(commands.Cog):
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
                 else:
-                        total=int(args[1])
+                        try:
+                            total=int(args[1])
+                        except ValueError:
+                            embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
                         country=args[2]
                         embedVar = discord.Embed(title="Proposal", description="A motion has been proposed.", color=discord.Color.from_rgb(78,134,219))
                         embedVar.add_field(name="Proposed Caucus:", value=type, inline=False)
@@ -136,7 +159,12 @@ class Chair(commands.Cog):
         url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
-            t=int(args[0])
+            try:
+                t=int(args[0])
+            except ValueError:
+                            embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
+                            return
             await ctx.send("The Mod has started!")
             def check(message):
                 return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
@@ -169,7 +197,12 @@ class Chair(commands.Cog):
         url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
         if self.session[ctx.guild.id]==True:
             args=args.split(' ')
-            t=int(args[0])
+            try:
+                t=int(args[0])
+            except ValueError:
+                            embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
+                            return
             await ctx.send("The UnMod has started!")
             def check(message):
                 return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
@@ -208,7 +241,8 @@ class Chair(commands.Cog):
             if status=='a':
                 await ctx.send(member.title()+" is absent!")
             elif status not in ['p','pv','a']:
-                await ctx.send(member+"'s status was not understood!")
+                embedVar = discord.Embed(title="Error", description="Not a valid registration status. Use p, pv or a.", color=discord.Color.from_rgb(78,134,219))
+                m= await ctx.channel.send(embed=embedVar)
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='View the register.', description='Displays all registered delegations and their statuses.')
     async def viewRegister(self,ctx):
