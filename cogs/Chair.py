@@ -79,7 +79,7 @@ class Chair(commands.Cog):
         
         if self.session[ctx.guild.id]==True:
                 args=args.split(' ')
-                u=args[0]
+                u=str(args[0])
                 t=int(args[1])
                 await ctx.send(u+" has the floor!")
                 def check(message):
@@ -102,8 +102,8 @@ class Chair(commands.Cog):
                 args=args.split(' ')
                 type=args[0]
                 if type=='mod':
-                        total=args[1]
-                        speaking=args[2]
+                        total=int(args[1])
+                        speaking=int(args[2])
                         country=args[3]
                         topic=' '.join(word for word in args[4:])
                         embedVar = discord.Embed(title="Proposal", description="A motion has been proposed.", color=discord.Color.from_rgb(78,134,219))
@@ -111,8 +111,8 @@ class Chair(commands.Cog):
                         embedVar.add_field(name="Proposed Caucus:", value=type, inline=False)
                         embedVar.add_field(name="Topic:", value=topic, inline=False)
                         embedVar.add_field(name="Country:", value=country, inline=False)
-                        embedVar.add_field(name="Speaking Time (seconds):", value=speaking, inline=False)
-                        embedVar.add_field(name="Total Time (minutes):", value=total, inline=False)
+                        embedVar.add_field(name="Speaking Time (seconds):", value=int(speaking), inline=False)
+                        embedVar.add_field(name="Total Time (minutes):", value=int(total), inline=False)
                         m= await ctx.channel.send(embed=embedVar)
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
@@ -122,7 +122,7 @@ class Chair(commands.Cog):
                         embedVar = discord.Embed(title="Proposal", description="A motion has been proposed.", color=discord.Color.from_rgb(78,134,219))
                         embedVar.add_field(name="Proposed Caucus:", value=type, inline=False)
                         embedVar.add_field(name="Country:", value=country, inline=False)
-                        embedVar.add_field(name="Total Time (minutes):", value=total, inline=False)
+                        embedVar.add_field(name="Total Time (minutes):", value=int(total), inline=False)
                         m= await ctx.channel.send(embed=embedVar)
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
