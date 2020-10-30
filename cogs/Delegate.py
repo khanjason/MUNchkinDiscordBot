@@ -84,7 +84,15 @@ class Delegate(commands.Cog):
         embedVar.add_field(name="Source Code", value="https://github.com/khanjason/MUNchkinDiscordBot", inline=False)
             
         m= await ctx.channel.send(embed=embedVar)
-
-        
+    
+    @commands.command(brief='Brief rules of procedure.', description='Provides Harvard style MUN rules of procedure, summarised.')
+    async def rules(self,ctx):
+        embedVar = discord.Embed(title="Rules of Procedure", description="Harvard MUN ruleset.", color=discord.Color.from_rgb(78,134,219))
+        embedVar.add_field(name="Debating", value="Debates contain three types of caucuses; general speaking, moderated, unmoderated.", inline=False)        
+        embedVar.add_field(name="General Speaking", value="Delegates request to be added to a list of general speakers, which the chair will proceed through. Delegates give an overview of their opinion on the debate. This happens at the beginning of a session or when there are no motions to entertain.", inline=False)
+        embedVar.add_field(name="Moderated Caucus", value="Moderated caucuses are timed with a maximum allowed speaking time and set topic. The chair chooses who gets to speak at each time.", inline=False)
+        embedVar.add_field(name="Unmoderated Caucus", value="Unmoderated caucuses are not chaired and are used for open talk among delegates and writing resolutions.", inline=False)
+        embedVar.add_field(name="Resolutions", value="Resolutions are made up of preambulatory and operative clauses, describing desired actions to be taken. Resolutions can be introduced and debated, and voted on to finalise a debate.", inline=False)
+        m= await ctx.channel.send(embed=embedVar)
 def setup(bot):
     bot.add_cog(Delegate(bot))
