@@ -91,5 +91,8 @@ Provides simplified ruleset for Harvard style MUN.
 ## Contributing
 Contributions are not open at this stage. Come back soon for updates, star and watch this repository.
 
+## Sponsorship
+Consider donating to help maintain server resources for MUNchkin. It can be as low as $1!
+
 ## License
 [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.en.html)
