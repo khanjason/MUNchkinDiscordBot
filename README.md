@@ -4,7 +4,7 @@ A discord bot for Model United Nations.
 
 ## Installation
 
-MUNchkin is running on Heroku. To add the bot to your own server, click [here](https://bit.ly/2TQ8hcp).
+MUNchkin is running on Heroku. To add the bot to your own server, click [here](https://top.gg/bot/767330479757197323).
 Make sure MUNchkin has the correct roles needed to access any channels that it will use.
 The 'Chair' role is required to use Chair commands. Delegate commands can used by anyone.
 
@@ -51,10 +51,10 @@ Propose a moderated caucus.
 Propose an unmod or other type of caucus.
 
 !mod [total time in min]
-Starts a timer for Mod.
+Starts a timer for Mod. Sending the word 'cancel' will cancel it.
 
 !unmod [total time in min]
-Starts a timer for Unmod.
+Starts a timer for Unmod. Sending the word 'cancel' will cancel it.
 
 !voting [topic]
 Starts a non-caucus vote. Useful for final vote or amendments.
