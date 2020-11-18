@@ -10,7 +10,7 @@ The 'Chair' role is required to use Chair commands. Delegate commands can used b
 
 ## Commands
 
-MUNchkin has a variety of commands used to aid online MUN sessions in discord. To start a session, write:
+MUNchkin has a variety of commands used to aid online MUN sessions in discord. To start a session, join a voice channel and write:
 
 ```
 !startSession
