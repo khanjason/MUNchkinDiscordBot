@@ -36,9 +36,11 @@ class Chair(commands.Cog):
             else:
                 await connected.channel.connect() 
                 await ctx.channel.send("Session has started!")
+        else:
+            embedVar = discord.Embed(title="Error", description="Please join a voice channel.", color=discord.Color.from_rgb(78,134,219))
+            await ctx.send(embed=embedVar)
     @startSession.error
     async def startSession_error(c,ctx, error):
-        await ctx.send(str('k'))
         if isinstance(error, commands.MissingRole):
             embedVar = discord.Embed(title="Error", description="The 'Chair' role is required to run this command.", color=discord.Color.from_rgb(78,134,219))
             await ctx.send(embed=embedVar)
