@@ -36,7 +36,14 @@ class Chair(commands.Cog):
             else:
                 await connected.channel.connect() 
                 await ctx.channel.send("Session has started!")
-        
+        else:
+            embedVar = discord.Embed(title="Error", description="Please join a voice channel.", color=discord.Color.from_rgb(78,134,219))
+            await ctx.send(embed=embedVar)
+    @startSession.error
+    async def startSession_error(c,ctx, error):
+        if isinstance(error, commands.MissingRole):
+            embedVar = discord.Embed(title="Error", description="The 'Chair' role is required to run this command.", color=discord.Color.from_rgb(78,134,219))
+            await ctx.send(embed=embedVar)
     @commands.has_role('Chair')
     @commands.command(brief='Ends the current Session.', description='Disables session commands and disconnects bot from voice channel.\n Clears GS list.')
     async def endSession(self, ctx):
