@@ -185,6 +185,7 @@ class Chair(commands.Cog):
                 YDL_OPTIONS = {
         'format': 'bestaudio',
         "force-ipv4":True,
+        'dump-pages':True,
         'source_address':'0.0.0.0',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
@@ -225,6 +226,7 @@ class Chair(commands.Cog):
                 YDL_OPTIONS = {
         'format': 'bestaudio',
         "force-ipv4":True,
+        'dump-pages':True,
         'source_address':'0.0.0.0',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
