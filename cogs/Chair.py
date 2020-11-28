@@ -188,6 +188,8 @@ class Chair(commands.Cog):
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192',
+            'force-ipv4':True,
+            'source_address':'0.0.0.0',
         }],
         'outtmpl': 'song.%(ext)s',
     }
@@ -225,6 +227,8 @@ class Chair(commands.Cog):
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192',
+            'force-ipv4':True,
+            'source_address':'0.0.0.0',
         }],
         'outtmpl': 'song.%(ext)s',
     }
