@@ -184,10 +184,14 @@ class Chair(commands.Cog):
                 voice_client=ctx.guild.voice_client
                 YDL_OPTIONS = {
         'format': 'bestaudio',
+        "force-ipv4":True,
+        'dump-pages':True,
+        'source_address':'0.0.0.0',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192',
+            
         }],
         'outtmpl': 'song.%(ext)s',
     }
@@ -221,10 +225,14 @@ class Chair(commands.Cog):
                 voice_client=ctx.guild.voice_client
                 YDL_OPTIONS = {
         'format': 'bestaudio',
+        "force-ipv4":True,
+        'dump-pages':True,
+        'source_address':'0.0.0.0',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192',
+            
         }],
         'outtmpl': 'song.%(ext)s',
     }
