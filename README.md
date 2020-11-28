@@ -51,10 +51,10 @@ Propose a moderated caucus.
 Propose an unmod or other type of caucus.
 
 !mod [total time in min]
-Starts a timer for Mod. Sending the word 'cancel' will cancel it.
+Starts a timer for Mod. Sending the word 'cancel' will cancel it. Plays a gavel sound when the timer is up (may not play if youtube cookies are not refreshed).
 
 !unmod [total time in min]
-Starts a timer for Unmod. Sending the word 'cancel' will cancel it.
+Starts a timer for Unmod. Sending the word 'cancel' will cancel it. Plays a gavel sound when the timer is up (may not play if youtube cookies are not refreshed).
 
 !voting [topic]
 Starts a non-caucus vote. Useful for final vote or amendments.
