@@ -5,7 +5,7 @@ from discord import FFmpegPCMAudio
 from collections import defaultdict
 from discord.ext import commands, tasks
 from discord.utils import get
-from youtube_dl import YoutubeDL
+from youtube_dl import YoutubeDL, utils
 class Chair(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -195,10 +195,14 @@ class Chair(commands.Cog):
         }],
         'outtmpl': 'song.%(ext)s',
     }
-                with YoutubeDL(YDL_OPTIONS) as ydl:
-                    ydl.download([url])
-                voice_client.play(FFmpegPCMAudio("song.mp3"))
-                voice_client.is_playing()
+                try:
+                    with YoutubeDL(YDL_OPTIONS) as ydl:
+                        ydl.download([url])
+                    voice_client.play(FFmpegPCMAudio("song.mp3"))
+                    voice_client.is_playing()
+                except  utils.DownloadError:
+                    embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
+                    m= await ctx.channel.send(embed=embedVar)
                 
                 
                 
@@ -236,10 +240,15 @@ class Chair(commands.Cog):
         }],
         'outtmpl': 'song.%(ext)s',
     }
-                with YoutubeDL(YDL_OPTIONS) as ydl:
-                    ydl.download([url])
-                voice_client.play(FFmpegPCMAudio("song.mp3"))
-                voice_client.is_playing()
+                try:
+                    with YoutubeDL(YDL_OPTIONS) as ydl:
+                        ydl.download([url])
+                    voice_client.play(FFmpegPCMAudio("song.mp3"))
+                    voice_client.is_playing()
+
+                except  utils.DownloadError:
+                    embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
+                    m= await ctx.channel.send(embed=embedVar)
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Register a delegate.', description='Requires !register [delegate name] [status].\n Status can be present (p),present and voting(pv) or absent (a)')
     async def register(self,ctx,*,args):
