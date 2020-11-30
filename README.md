@@ -89,7 +89,7 @@ Provides simplified ruleset for Harvard style MUN.
 
 
 ## Contributing
-Contributions are not open at this stage. Come back soon for updates, star and watch this repository.
+If you wish to contribute to this repository, join the [support server](https://discord.gg/3rJHKYZ8wQ) and send a message there. Come back soon for updates, star and watch this repository.
 
 ## Sponsorship
 Consider donating to help maintain server resources for MUNchkin. It can be as low as $1!
