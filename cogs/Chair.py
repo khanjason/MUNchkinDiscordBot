@@ -146,7 +146,7 @@ class Chair(commands.Cog):
                         m= await ctx.channel.send(embed=embedVar)
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
-                        await m.add_reaction("\U000274C")
+                        await m.add_reaction('\N{CROSS MARK}')
                 else:
                         try:
                             total=int(args[1])
@@ -161,7 +161,7 @@ class Chair(commands.Cog):
                         m= await ctx.channel.send(embed=embedVar)
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
-                        await m.add_reaction("\U000274C")
+                        await m.add_reaction('\N{CROSS MARK}')
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Starts a moderated caucus.', description='Requires !mod [total time in min].\n Starts a timer.')
     async def mod(self,ctx, *,args):
@@ -301,7 +301,7 @@ class Chair(commands.Cog):
                 m= await ctx.channel.send(embed=embedVar)
                 await m.add_reaction("\U0001F44D")
                 await m.add_reaction("\U0001F44E")
-                await m.add_reaction(u"\u274C")
+                await m.add_reaction('\N{CROSS MARK}')
                 
                 
 
