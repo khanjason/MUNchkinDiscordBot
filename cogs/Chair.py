@@ -301,7 +301,8 @@ class Chair(commands.Cog):
                 m= await ctx.channel.send(embed=embedVar)
                 await m.add_reaction("\U0001F44D")
                 await m.add_reaction("\U0001F44E")
-                await m.add_reaction("\U000274C")
+                await m.add_reaction(u"\u274C")
+                
                 
 
     @commands.has_role('Chair')
