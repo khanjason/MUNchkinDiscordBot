@@ -33,7 +33,7 @@ for filename in os.listdir('./cogs'):
 @bot.command(pass_content=True)
 async def help(ctx):
     embedVar= discord.Embed(title="MUNchkin Help", description="List of commands for MUNchkin.", color=discord.Color.from_rgb(78,134,219))
-    embedVar.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/2/2f/Flag_of_the_United_Nations.svg")
+    embedVar.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/UN_flag.png/1024px-UN_flag.png")
     embedVar.add_field(name="Chair Commands", value="These commands can only be used by the Chair role.", inline=False)
     embedVar.add_field(name="!startSession", value="Enables all commands for a session and invites bot to voice channel.", inline=True)
     embedVar.add_field(name="!register [delegate name] [status]", value="Status can be present (p),present and voting(pv) or absent (a)", inline=True)
