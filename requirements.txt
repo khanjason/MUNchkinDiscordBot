@@ -5,3 +5,4 @@ colorlog
 PyNaCl
 pymongo
 pymongo[srv]
+dnspython
