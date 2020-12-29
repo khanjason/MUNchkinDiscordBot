@@ -3,41 +3,37 @@ import time
 import asyncio
 from discord.ext import commands, tasks
 from collections import defaultdict
-
+import pymongo
+import os
+from pymongo import MongoClient
 class Delegate(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.chair=self.bot.get_cog('Chair')
-        if self.chair is not None:
-            self.session=self.chair.session
-            self.general_speakers=self.chair.general_speakers
-        else:
-            self.session={}
-            self.general_speakers=defaultdict(list)
+        self.mongo_url=os.getenv('CONNECTION_URL')
+        self.cluster= MongoClient(self.mongo_url)
+        self.db=self.cluster["Database1"]
+        self.sessionTable=self.db["Session"]
+        self.registerTable=self.db["Register"]
+        self.GSTable=self.db["GeneralSpeakers"]
+        
         
     @commands.command(brief='Add yourself to GS list.', description='Adds your name to the general speakers list.')
     async def addGS(self,ctx):
-        if self.chair is not None:
-            if (self.chair.session)[ctx.guild.id]==True:
-                    tmp=self.general_speakers[ctx.guild.id]
-                    if ctx.author.nick!=None:
-                        tmp.append(str(ctx.author.nick))
-                    else:
-                        tmp.append(str(ctx.author))
-                    self.general_speakers[ctx.guild.id]=tmp
-                    await ctx.channel.send(ctx.author.mention+' has been added to the General Speakers List!')
-        else:
-            
-            if (self.session)[ctx.guild.id]==True:
-                    tmp=self.general_speakers[ctx.guild.id]
-                    if ctx.author.nick!=None:
-                        tmp.append(str(ctx.author.nick))
-                    else:
-                        tmp.append(str(ctx.author))
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        if sess==True:
+            GStag=self.GSTable.find_one({"_id":ctx.guild.id})
+            tmp=GStag.get("GS")            
+            if ctx.author.nick!=None:
+                tmp.append(str(ctx.author.nick))
+            else:
+                tmp.append(str(ctx.author))
                     
-                    self.general_speakers[ctx.guild.id]=tmp
-                    await ctx.channel.send(ctx.author.mention+' has been added to the General Speakers List!')
-
+            self.GSTable.update_one({"_id":ctx.guild.id},{"$set":{"GS":tmp}})
+            await ctx.channel.send(ctx.author.mention+' has been added to the General Speakers List!')
+        
+            
     @commands.command(brief='Lists preamble phrases.', description='Displays list of phrases, useful for preambulatory clauses.')
     async def preamble(self,ctx):
         if (self.session)[ctx.guild.id]==True:

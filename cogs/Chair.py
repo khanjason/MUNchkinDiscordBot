@@ -20,10 +20,11 @@ class Chair(commands.Cog):
         self.db=self.cluster["Database1"]
         self.sessionTable=self.db["Session"]
         self.registerTable=self.db["Register"]
+        self.GSTable=self.db["GeneralSpeakers"]
         self.delegate=self.bot.get_cog('Delegate')
         self.general_speakers={}
-        self.player={}
-        self.register = defaultdict(dict)
+        
+        
         
     @commands.has_role('Chair')
     @commands.command(brief='Starts a session.', description='Enables all commands for a session and invites bot to voice channel.')
@@ -41,12 +42,14 @@ class Chair(commands.Cog):
         if self.registerTable.find({"_id":ctx.guild.id}).count() == 0:
             registerTag={"_id":ctx.guild.id,"register":{}}
             self.registerTable.insert_one(registerTag)
-            
+        if self.GSTable.find({"_id":ctx.guild.id}).count() == 0:
+            GSTag={"_id":ctx.guild.id,"GS":[]}
+            self.GSTable.insert_one(GSTag)
             
         
-        t=[]
-        self.general_speakers[ctx.guild.id]=t
-        #self.register[ctx.guild.id]={}
+        #t=[]
+        #self.general_speakers[ctx.guild.id]=t
+        
         connected = ctx.author.voice
         if connected:
             voice_client = get(ctx.bot.voice_clients, guild=ctx.guild)
@@ -74,6 +77,8 @@ class Chair(commands.Cog):
             self.sessionTable.update_one({"_id":ctx.guild.id},{"$set":{"session":False}})
             self.registerTable.find({"_id":ctx.guild.id})
             self.registerTable.update_one({"_id":ctx.guild.id},{"$set":{"register":{}}})
+            self.GSTable.find({"_id":ctx.guild.id})
+            self.GSTable.update_one({"_id":ctx.guild.id},{"$set":{"GS":[]}})
         else:
             #create
             
@@ -93,19 +98,20 @@ class Chair(commands.Cog):
         sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
         sess=sesstag.get("session")
         if sess==True:
+                GStag=self.GSTable.find_one({"_id":ctx.guild.id})
+                gslist=GStag.get("GS")
                 
-                '''
                 embedVar = discord.Embed(title="General Speakers List", description="General Speakers.", color=discord.Color.from_rgb(78,134,219))
                 t=''
-                if self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]==[]:
+                if gslist==[]:
                     embedVar = discord.Embed(title="General Speakers List", description="This list is empty.", color=discord.Color.from_rgb(78,134,219))
                     await ctx.channel.send(embed=embedVar)
                 else:
-                    for country in self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]:
+                    for country in gslist:
                         t=t+country+'\n'
                     embedVar.add_field(name="Countries:", value=t, inline=False)
             
-                    await ctx.channel.send(embed=embedVar)'''
+                    await ctx.channel.send(embed=embedVar)
                     
     @commands.has_role('Chair')  
     @commands.command(brief='Removes first delegate from general speakers list.', description='Remove first delegate from general speakers list.\n Used just after a speaker has finished.')
