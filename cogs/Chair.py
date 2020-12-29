@@ -32,12 +32,12 @@ class Chair(commands.Cog):
             #update
             self.sessionTable.find({"_id":ctx.guild.id})
             self.sessionTable.update_one({"_id":ctx.guild.id},{"$set":{"session":True}})
-            await ctx.channel.send("ping updated")
+            
         else:
             #create
             sessionTag={"_id":ctx.guild.id,"session":True}
             self.sessionTable.insert_one(sessionTag)
-            await ctx.channel.send("ping registered")
+            
             
         
         t=[]
@@ -68,7 +68,7 @@ class Chair(commands.Cog):
             #update
             self.sessionTable.find({"_id":ctx.guild.id})
             self.sessionTable.update_one({"_id":ctx.guild.id},{"$set":{"session":False}})
-            await ctx.channel.send("ping updated")
+            
         else:
             #create
             
@@ -80,8 +80,8 @@ class Chair(commands.Cog):
         if connected:
             server=ctx.message.guild.voice_client
             await server.disconnect()
-        await ctx.channel.send("Session has ended!")
         
+        await ctx.channel.send("Session has ended!")
     @commands.has_role('Chair')  
     @commands.command(brief='View the general speakers list.', description='Prints out the current general speakers list.')
     async def GS(self, ctx):
