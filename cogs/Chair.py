@@ -85,7 +85,11 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')  
     @commands.command(brief='View the general speakers list.', description='Prints out the current general speakers list.')
     async def GS(self, ctx):
-        if self.session[ctx.guild.id]==True:
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        if sess==True:
+                await ctx.channel.send("session is true")
+                '''
                 embedVar = discord.Embed(title="General Speakers List", description="General Speakers.", color=discord.Color.from_rgb(78,134,219))
                 t=''
                 if self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]==[]:
@@ -96,7 +100,7 @@ class Chair(commands.Cog):
                         t=t+country+'\n'
                     embedVar.add_field(name="Countries:", value=t, inline=False)
             
-                    await ctx.channel.send(embed=embedVar)
+                    await ctx.channel.send(embed=embedVar)'''
                     
     @commands.has_role('Chair')  
     @commands.command(brief='Removes first delegate from general speakers list.', description='Remove first delegate from general speakers list.\n Used just after a speaker has finished.')
