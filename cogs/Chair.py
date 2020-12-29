@@ -324,7 +324,9 @@ class Chair(commands.Cog):
         sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
         sess=sesstag.get("session")
         if sess==True:
-            dic=self.register[ctx.guild.id]
+            regtag=self.registerTable.find_one({"_id":ctx.guild.id})
+            dic=regtag.get("register")
+            
             embedVar = discord.Embed(title="Register", description="All registered delegates.", color=discord.Color.from_rgb(78,134,219))
             for k,v in dic.items():
                 t=''
