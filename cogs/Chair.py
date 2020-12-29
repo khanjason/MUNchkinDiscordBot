@@ -22,7 +22,6 @@ class Chair(commands.Cog):
         self.registerTable=self.db["Register"]
         self.GSTable=self.db["GeneralSpeakers"]
         self.delegate=self.bot.get_cog('Delegate')
-        self.general_speakers={}
         
         
         
@@ -45,10 +44,7 @@ class Chair(commands.Cog):
         if self.GSTable.find({"_id":ctx.guild.id}).count() == 0:
             GSTag={"_id":ctx.guild.id,"GS":[]}
             self.GSTable.insert_one(GSTag)
-            
-        
-        #t=[]
-        #self.general_speakers[ctx.guild.id]=t
+
         
         connected = ctx.author.voice
         if connected:
