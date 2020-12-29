@@ -39,7 +39,7 @@ class Chair(commands.Cog):
             sessionTag={"_id":ctx.guild.id,"session":True}
             self.sessionTable.insert_one(sessionTag)
         if self.registerTable.find({"_id":ctx.guild.id}).count() == 0:
-            registerTag={"_id":ctx.guild.id,"register":[]}
+            registerTag={"_id":ctx.guild.id,"register":{}}
             self.registerTable.insert_one(registerTag)
             
             
