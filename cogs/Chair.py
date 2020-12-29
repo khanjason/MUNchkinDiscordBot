@@ -39,11 +39,7 @@ class Chair(commands.Cog):
             self.sessionTable.insert_one(sessionTag)
             await ctx.channel.send("ping registered")
             
-        '''self.session[ctx.guild.id]=True
-        if self.delegate is not None:
-            self.delegate.session[ctx.guild.id]=True
-            self.delegate.general_speakers[ctx.guild.id]=[]
-        else:'''
+        
         t=[]
         self.general_speakers[ctx.guild.id]=t
         self.register[ctx.guild.id]={}
@@ -68,10 +64,17 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(brief='Ends the current Session.', description='Disables session commands and disconnects bot from voice channel.\n Clears GS list.')
     async def endSession(self, ctx):
-        self.session[ctx.guild.id]=False
-        if self.delegate is not None:
-            self.delegate.session[ctx.guild.id]=False
-            self.delegate.general_speakers[ctx.guild.id]=[]
+        if self.sessionTable.find({"_id":ctx.guild.id}).count() > 0:
+            #update
+            self.sessionTable.find({"_id":ctx.guild.id})
+            self.sessionTable.update_one({"_id":ctx.guild.id},{"$set":{"session":False}})
+            await ctx.channel.send("ping updated")
+        else:
+            #create
+            
+            await ctx.channel.send("There is no session in progress.")
+        
+       
         
         connected = ctx.author.voice
         if connected:
