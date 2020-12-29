@@ -1,15 +1,24 @@
 import discord
 import time
 import asyncio
+import pymongo
+from pymongo import MongoClient
 from discord import FFmpegPCMAudio
 from collections import defaultdict
 from discord.ext import commands, tasks
 from discord.utils import get
 from youtube_dl import YoutubeDL, utils
+import pymongo
+import os
+from pymongo import MongoClient
 class Chair(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.session={}
+        self.mongo_url=os.getenv('CONNECTION_URL')
+        self.cluster= MongoClient(self.mongo_url)
+        self.db=cluster["Database1"]
+        self.sessionTable=db["Session"]
         self.delegate=self.bot.get_cog('Delegate')
         self.general_speakers={}
         self.player={}
@@ -18,13 +27,25 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(brief='Starts a session.', description='Enables all commands for a session and invites bot to voice channel.')
     async def startSession(self, ctx):
-        self.session[ctx.guild.id]=True
+        
+        if self.sessionTable.find({"_id":ctx.guild.id}).count() > 0:
+            #update
+            self.sessionTable.find({"_id":ctx.guild.id})
+            self.sessionTable.update_one({"_id":ctx.guild.id},{"$set":{"session":True}})
+            await ctx.channel.send("ping updated")
+        else:
+            #create
+            sessionTag={"_id":ctx.guild.id,"session":True}
+            self.sessionTable.insert_one(sessionTag)
+            await ctx.channel.send("ping registered")
+            
+        '''self.session[ctx.guild.id]=True
         if self.delegate is not None:
             self.delegate.session[ctx.guild.id]=True
             self.delegate.general_speakers[ctx.guild.id]=[]
-        else:
-            t=[]
-            self.general_speakers[ctx.guild.id]=t
+        else:'''
+        t=[]
+        self.general_speakers[ctx.guild.id]=t
         self.register[ctx.guild.id]={}
         connected = ctx.author.voice
         if connected:
