@@ -119,14 +119,15 @@ class Chair(commands.Cog):
         sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
         sess=sesstag.get("session")
         if sess==True:
-        
-                if self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]==[]:
+                GStag=self.GSTable.find_one({"_id":ctx.guild.id})
+                gslist=GStag.get("GS")
+                if gslist==[]:
                     embedVar = discord.Embed(title="Error", description="List is empty.", color=discord.Color.from_rgb(78,134,219))
                     await ctx.channel.send(embed=embedVar)                    
                 else:
-                    t=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][0]
-                    self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id][1:]
-                    self.general_speakers[ctx.guild.id]=self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]
+                    t=gslist[0]
+                    gslist=gslist[1:]
+                    self.GSTable.update_one({"_id":ctx.guild.id},{"$set":{"GS":gslist}})
                                     
                     await ctx.channel.send(str(t)+' was removed from the GS list.')
                 
