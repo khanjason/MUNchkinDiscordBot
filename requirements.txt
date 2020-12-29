@@ -4,3 +4,4 @@ youtube_dl
 colorlog
 PyNaCl
 pymongo
+pymongo[srv]
