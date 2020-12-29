@@ -7,10 +7,37 @@ from pymongo import MongoClient
 from discord.ext import commands,tasks
 
 
+
+
 DISCORD_TOKEN = os.getenv('BOT_TOKEN')
 CONNECTION_URL= os.getenv('CONNECTION_URL')
-bot = commands.Bot(command_prefix="!")
+cluster= MongoClient(CONNECTION_URL)
+db=cluster["Database1"]
+prefixTable=db["Prefix"]
+
+async def getPrefix(bot,message):
+    if prefixTable.find({"_id":message.guild.id}).count() > 0:
+        preftag=prefixTable.find_one({"_id":message.guild.id})
+        pref=preftag.get("prefix")
+    else:
+        pref='!'
+    return pref
+
+bot = commands.Bot(command_prefix=getPrefix)
 bot.remove_command('help')
+
+@bot.command()
+async def prefix(ctx,*,args):
+    args=args.split(' ')
+    p=args[0]
+    if prefixTable.find({"_id":ctx.guild.id}).count() > 0:
+        prefixTable.update_one({"_id":ctx.guild.id},{"$set":{"prefix":p}})
+    else:
+        prefTag={"_id":ctx.guild.id,"prefix":p}
+        prefixTable.insert_one(prefTag)        
+
+    
+
 
 @bot.event
 async def on_ready():
