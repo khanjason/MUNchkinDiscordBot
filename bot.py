@@ -16,17 +16,6 @@ bot.remove_command('help')
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="the United Nations"))
 
-@bot.command()
-async def ping1(ctx):
-    mongo_url=CONNECTION_URL
-    cluster=MongoClient(mongo_url)
-    db=cluster["Database1"]
-    collection= db["Session"]
-    ping_cm= {"command":1}
-    collection.insert_one(ping_cm)
-    await ctx.channel.send("ping registered")
-
-
 
 @bot.command()
 async def load(ctx,extension):
