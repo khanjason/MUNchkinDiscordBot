@@ -36,7 +36,8 @@ async def prefix(ctx,*,args):
         prefTag={"_id":ctx.guild.id,"prefix":p}
         prefixTable.insert_one(prefTag)        
 
-    
+    embedVar= discord.Embed(title="Prefix", description="Prefix has been changed to "+p, color=discord.Color.from_rgb(78,134,219))
+    await ctx.channel.send(embed=embedVar)    
 
 
 @bot.event
