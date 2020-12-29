@@ -17,8 +17,8 @@ class Chair(commands.Cog):
         self.session={}
         self.mongo_url=os.getenv('CONNECTION_URL')
         self.cluster= MongoClient(self.mongo_url)
-        self.db=cluster["Database1"]
-        self.sessionTable=db["Session"]
+        self.db=self.cluster["Database1"]
+        self.sessionTable=self.db["Session"]
         self.delegate=self.bot.get_cog('Delegate')
         self.general_speakers={}
         self.player={}
