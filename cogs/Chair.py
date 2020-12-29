@@ -19,6 +19,7 @@ class Chair(commands.Cog):
         self.cluster= MongoClient(self.mongo_url)
         self.db=self.cluster["Database1"]
         self.sessionTable=self.db["Session"]
+        self.registerTable=self.db["Register"]
         self.delegate=self.bot.get_cog('Delegate')
         self.general_speakers={}
         self.player={}
@@ -37,12 +38,15 @@ class Chair(commands.Cog):
             #create
             sessionTag={"_id":ctx.guild.id,"session":True}
             self.sessionTable.insert_one(sessionTag)
+        if self.registerTable.find({"_id":ctx.guild.id}).count() == 0:
+            registerTag={"_id":ctx.guild.id,"register":[]}
+            self.registerTable.insert_one(registerTag)
             
             
         
         t=[]
         self.general_speakers[ctx.guild.id]=t
-        self.register[ctx.guild.id]={}
+        #self.register[ctx.guild.id]={}
         connected = ctx.author.voice
         if connected:
             voice_client = get(ctx.bot.voice_clients, guild=ctx.guild)
@@ -88,7 +92,7 @@ class Chair(commands.Cog):
         sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
         sess=sesstag.get("session")
         if sess==True:
-                await ctx.channel.send("session is true")
+                
                 '''
                 embedVar = discord.Embed(title="General Speakers List", description="General Speakers.", color=discord.Color.from_rgb(78,134,219))
                 t=''
@@ -105,7 +109,10 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')  
     @commands.command(brief='Removes first delegate from general speakers list.', description='Remove first delegate from general speakers list.\n Used just after a speaker has finished.')
     async def popGS(self, ctx):
-        if self.session[ctx.guild.id]==True:
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        if sess==True:
+        
                 if self.bot.get_cog('Delegate').general_speakers[ctx.guild.id]==[]:
                     embedVar = discord.Embed(title="Error", description="List is empty.", color=discord.Color.from_rgb(78,134,219))
                     await ctx.channel.send(embed=embedVar)                    
@@ -121,8 +128,9 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Yields the floor to a delegate.', description='Needs [delegate name] [time in seconds] and starts a timer.')
     async def speak(self,ctx, *,args):
-        
-        if self.session[ctx.guild.id]==True:
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        if sess==True:
                 args=args.split(' ')
                 u=str(args[0])
                 try:
@@ -152,7 +160,9 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Proposes a caucus.', description='requires [type].\n If type is mod, structure is !propose mod [total time in min] [speakers time in sec] [country proposed] [topic].\n If other type, requires [type] [total time in min] [country proposed].')
     async def propose(self, ctx,*,args):
-        if self.session[ctx.guild.id]==True:
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        if sess==True:
                 args=args.split(' ')
                 type=args[0]
                 if type=='mod':
@@ -194,7 +204,9 @@ class Chair(commands.Cog):
     @commands.command(pass_context=True,brief='Starts a moderated caucus.', description='Requires !mod [total time in min].\n Starts a timer.')
     async def mod(self,ctx, *,args):
         url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
-        if self.session[ctx.guild.id]==True:
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        if sess==True:
             args=args.split(' ')
             try:
                 t=int(args[0])
@@ -240,7 +252,9 @@ class Chair(commands.Cog):
     @commands.command(pass_context=True,brief='Starts a unmoderated caucus.', description='Requires !unmod [total time in min].\n Starts a timer.')
     async def unmod(self,ctx, *,args):
         url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
-        if self.session[ctx.guild.id]==True:
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        if sess==True:
             args=args.split(' ')
             try:
                 t=int(args[0])
@@ -282,7 +296,9 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Register a delegate.', description='Requires !register [delegate name] [status].\n Status can be present (p),present and voting(pv) or absent (a)')
     async def register(self,ctx,*,args):
-        if self.session[ctx.guild.id]==True:
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        if sess==True:
             args=args.split(' ')
             member=args[0].lower()
             status= args[1]
@@ -300,7 +316,9 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='View the register.', description='Displays all registered delegations and their statuses.')
     async def viewRegister(self,ctx):
-        if self.session[ctx.guild.id]==True:
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        if sess==True:
             dic=self.register[ctx.guild.id]
             embedVar = discord.Embed(title="Register", description="All registered delegates.", color=discord.Color.from_rgb(78,134,219))
             for k,v in dic.items():
@@ -320,7 +338,9 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Start a vote.', description='Starts a non-caucus vote. Useful for final vote or amendments.\n Requires !voting [topic]')
     async def voting(self, ctx,*,args):
-        if self.session[ctx.guild.id]==True:
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        if sess==True:
                 args=args.split(' ')
                 topic=' '.join(word for word in args)
                 embedVar = discord.Embed(title="Voting", description="A vote is in progress.", color=discord.Color.from_rgb(78,134,219))
