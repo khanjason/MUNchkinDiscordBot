@@ -303,8 +303,12 @@ class Chair(commands.Cog):
             args=args.split(' ')
             member=args[0].lower()
             status= args[1]
-            dic=self.register[ctx.guild.id]
-            dic[member]=status
+            regtag=self.registerTable.find_one({"_id":ctx.guild.id})
+            reg=regtag.get("register")
+            
+            reg[member]=status
+            self.registerTable.update_one({"_id":ctx.guild.id},{"$set":{"register":reg}})
+
             if status=='p':
                 await ctx.send(member.title()+" is present!")
             if status=='pv':
