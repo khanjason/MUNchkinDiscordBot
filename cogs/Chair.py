@@ -72,7 +72,8 @@ class Chair(commands.Cog):
             #update
             self.sessionTable.find({"_id":ctx.guild.id})
             self.sessionTable.update_one({"_id":ctx.guild.id},{"$set":{"session":False}})
-            
+            self.registerTable.find({"_id":ctx.guild.id})
+            self.registerTable.update_one({"_id":ctx.guild.id},{"$set":{"register":{}}})
         else:
             #create
             
