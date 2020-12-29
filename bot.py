@@ -6,7 +6,7 @@ from pymongo import MongoClient
 
 from discord.ext import commands,tasks
 
-
+from discord.ext.commands import CommandNotFound
 
 
 DISCORD_TOKEN = os.getenv('BOT_TOKEN')
@@ -90,6 +90,11 @@ async def help(ctx):
     embedVar.add_field(name="Source Code", value='[View!](https://github.com/khanjason/MUNchkinDiscordBot)', inline=True)
     await ctx.channel.send(embed=embedVar)
 
-
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, CommandNotFound):
+        embedVar= discord.Embed(title="Error", description="Invalid command. Please change prefix with command 'prefix' to avoid clashing.", color=discord.Color.from_rgb(78,134,219))
+        await ctx.channel.send(embed=embedVar)
+    return
     
 bot.run(DISCORD_TOKEN)
