@@ -1,19 +1,31 @@
 import discord
 import time
 import os
-
+import pymongo
+from pymongo import MongoClient
 
 from discord.ext import commands,tasks
 
 
 DISCORD_TOKEN = os.getenv('BOT_TOKEN')
-
+CONNECTION_URL= os.getenv('CONNECTION_URL')
 bot = commands.Bot(command_prefix="!")
 bot.remove_command('help')
 
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="the United Nations"))
+
+@bot.command()
+async def ping1(ctx):
+    mongo_url=CONNECTION_URL
+    cluster=MongoClient(mongo_url)
+    db=cluster["Database1"]
+    collection= db["Session"]
+    ping_cm= {"command":1}
+    collection.insert_one(ping_cm)
+    await ctx.channel.send("ping registered")
+
 
 
 @bot.command()

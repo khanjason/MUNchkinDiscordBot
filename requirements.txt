@@ -3,3 +3,4 @@ discord.py[voice]
 youtube_dl
 colorlog
 PyNaCl
+pymongo
