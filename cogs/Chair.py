@@ -222,7 +222,9 @@ class Chair(commands.Cog):
                             m= await ctx.channel.send(embed=embedVar)
                             return
             starttime=datetime.now()
+            print(starttime)
             endtime=starttime+datetime.timedelta(minutes=t)
+            print(endtime)
             await ctx.send("The Mod has started!")
             def check(message):
                 return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
