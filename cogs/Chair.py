@@ -488,6 +488,7 @@ class Chair(commands.Cog):
                     except  utils.DownloadError:
                         embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
                         m= await ctx.channel.send(embed=embedVar)
+            return
         
         async def unmodtimer(ctx,args):
             url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
@@ -553,8 +554,9 @@ class Chair(commands.Cog):
                     except  utils.DownloadError:
                         embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
                         m= await ctx.channel.send(embed=embedVar)
+            return
 
-        
+                    
         if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
             caucustag=self.caucusTable.find_one({"_id":ctx.guild.id})
             ctype=caucustag.get("type")
