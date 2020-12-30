@@ -6,3 +6,4 @@ PyNaCl
 pymongo
 pymongo[srv]
 dnspython
+datetime
