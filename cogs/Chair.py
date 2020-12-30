@@ -222,9 +222,9 @@ class Chair(commands.Cog):
                             m= await ctx.channel.send(embed=embedVar)
                             return
             starttime=datetime.datetime.now()
-            print(starttime)
+            
             endtime=starttime+datetime.timedelta(minutes=t)
-            print(endtime)
+            
             await ctx.send("The Mod has started!")
             def check(message):
                 return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
@@ -235,7 +235,9 @@ class Chair(commands.Cog):
                 if m.content.lower() == "pause":
                     #handle data
                     tmptime=datetime.datetime.now()
+                    print(tmptime)
                     lefttime=endtime-tmptime
+                    print(lefttime)
                     if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
                         self.caucusTable.find({"_id":ctx.guild.id})
                         self.caucusTable.update_one({"_id":ctx.guild.id},{"$set":{"time":lefttime.minute,"type":'mod'}})
