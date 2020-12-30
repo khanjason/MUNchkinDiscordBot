@@ -237,13 +237,14 @@ class Chair(commands.Cog):
                     tmptime=datetime.datetime.now()
                     
                     lefttime=endtime-tmptime
-                    print(lefttime.seconds)
+                    lefttimeminute=(lefttime.seconds)/60
+                    print(lefttimeminute)
                     if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
                         self.caucusTable.find({"_id":ctx.guild.id})
-                        self.caucusTable.update_one({"_id":ctx.guild.id},{"$set":{"time":lefttime.minute,"type":'mod'}})
+                        self.caucusTable.update_one({"_id":ctx.guild.id},{"$set":{"time":lefttimeminute,"type":'mod'}})
 
                     else:
-                        caucusTag={"_id":ctx.guild.id,"time":lefttime.minute,"type":'mod'}
+                        caucusTag={"_id":ctx.guild.id,"time":lefttimeminute,"type":'mod'}
                         self.caucusTable.insert_one(caucusTag)
 
                     await ctx.send("mod paused")
