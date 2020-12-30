@@ -224,7 +224,7 @@ class Chair(commands.Cog):
                 return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
             try:
                 m = await self.bot.wait_for("message", check=check, timeout=t*60)
-                await ctx.send(m)
+                await ctx.send(m.content)
                 await ctx.send("mod cancelled")
             except asyncio.TimeoutError:
                 await ctx.send(f"Mod is over!")
