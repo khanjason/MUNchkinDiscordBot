@@ -8,6 +8,7 @@ from collections import defaultdict
 from discord.ext import commands, tasks
 from discord.utils import get
 from youtube_dl import YoutubeDL, utils
+from datetime import datetime
 import pymongo
 import os
 from pymongo import MongoClient
@@ -211,6 +212,7 @@ class Chair(commands.Cog):
         url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
         sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
         sess=sesstag.get("session")
+        
         if sess==True:
             args=args.split(' ')
             try:
@@ -219,13 +221,28 @@ class Chair(commands.Cog):
                             embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
                             m= await ctx.channel.send(embed=embedVar)
                             return
+            starttime=datetime.now()
+            endtime=starttime+datetime.timedelta(minutes=t)
             await ctx.send("The Mod has started!")
             def check(message):
                 return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
             try:
                 m = await self.bot.wait_for("message", check=check, timeout=t*60)
-                await ctx.send(m.content)
-                await ctx.send("mod cancelled")
+                if m.content.lower() == "cancel":
+                    await ctx.send("mod cancelled")
+                if m.content.lower() == "pause":
+                    #handle data
+                    tmptime=datetime.now()
+                    lefttime=endtime-tmptime
+                    if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
+                        self.caucusTable.find({"_id":ctx.guild.id})
+                        self.caucusTable.update_one({"_id":ctx.guild.id},{"$set":{"time":lefttime.minute,"type":'mod'}})
+
+                    else:
+                        caucusTag={"_id":ctx.guild.id,"time":lefttime.minute,"type":'mod'}
+                        self.caucusTable.insert_one(caucusTag)
+
+                    await ctx.send("mod paused")
             except asyncio.TimeoutError:
                 await ctx.send(f"Mod is over!")
                 
