@@ -559,6 +559,8 @@ class Chair(commands.Cog):
             caucustag=self.caucusTable.find_one({"_id":ctx.guild.id})
             ctype=caucustag.get("type")
             ctime=caucustag.get("time")
+            print(ctime)
+            print(ctype)
             if ctype=='mod':
                 self.caucusTable.delete_one({"_id":ctx.guild.id})
                 embedVar = discord.Embed(title="Resume", description="Mod Resumed", color=discord.Color.from_rgb(78,134,219))
