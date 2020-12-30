@@ -237,7 +237,7 @@ class Chair(commands.Cog):
                     tmptime=datetime.datetime.now()
                     
                     lefttime=endtime-tmptime
-                    print(lefttime.minute)
+                    print(lefttime.seconds)
                     if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
                         self.caucusTable.find({"_id":ctx.guild.id})
                         self.caucusTable.update_one({"_id":ctx.guild.id},{"$set":{"time":lefttime.minute,"type":'mod'}})
