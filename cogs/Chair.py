@@ -13,139 +13,7 @@ import pymongo
 import os
 from pymongo import MongoClient
 
-async def unmodtimer(ctx,args):
-            url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
-            sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
-            sess=sesstag.get("session")
-            if sess==True:
-                args=args.split(' ')
-                try:
-                    t=args[0]
-                except ValueError:
-                                embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
-                                m= await ctx.channel.send(embed=embedVar)
-                                return
-                starttime=datetime.datetime.now()
-                
-                endtime=starttime+datetime.timedelta(minutes=t)
-                await ctx.send("The UnMod has started!")
-                def check(message):
-                    return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
-                try:
-                    m = await self.bot.wait_for("message", check=check, timeout=t*60)
-                    if m.content.lower() == "cancel":
-                        await ctx.send("unmod cancelled")
-                    if m.content.lower() == "pause":
-                        #handle data
-                        tmptime=datetime.datetime.now()
-                        
-                        lefttime=endtime-tmptime
-                        lefttimeminute=(lefttime.seconds)/60
-                        
-                        if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
-                            self.caucusTable.find({"_id":ctx.guild.id})
-                            self.caucusTable.update_one({"_id":ctx.guild.id},{"$set":{"time":lefttimeminute,"type":'unmod'}})
 
-                        else:
-                            caucusTag={"_id":ctx.guild.id,"time":lefttimeminute,"type":'unmod'}
-                            self.caucusTable.insert_one(caucusTag)
-
-                        await ctx.send("unmod paused")
-                    
-                except asyncio.TimeoutError:
-                    await ctx.send(f"UnMod is over!")
-                    voice_client=ctx.guild.voice_client
-                    YDL_OPTIONS = {
-            'format': 'bestaudio',
-            "force-ipv4":True,
-            'dump-pages':True,
-            'source_address':'0.0.0.0',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-                
-            }],
-            'outtmpl': 'song.%(ext)s',
-        }
-                    try:
-                        with YoutubeDL(YDL_OPTIONS) as ydl:
-                            ydl.download([url])
-                        voice_client.play(FFmpegPCMAudio("song.mp3"))
-                        voice_client.is_playing()
-
-                    except  utils.DownloadError:
-                        embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
-                        m= await ctx.channel.send(embed=embedVar)
-            return
-
-
-async def modtimer(ctx,args):
-            url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
-            sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
-            sess=sesstag.get("session")
-            
-            if sess==True:
-                args=args.split(' ')
-                try:
-                    t=args[0]
-                except ValueError:
-                                embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
-                                m= await ctx.channel.send(embed=embedVar)
-                                return
-                starttime=datetime.datetime.now()
-                
-                endtime=starttime+datetime.timedelta(minutes=t)
-                
-                await ctx.send("The Mod has started!")
-                def check(message):
-                    return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
-                try:
-                    m = await self.bot.wait_for("message", check=check, timeout=t*60)
-                    if m.content.lower() == "cancel":
-                        await ctx.send("mod cancelled")
-                    if m.content.lower() == "pause":
-                        #handle data
-                        tmptime=datetime.datetime.now()
-                        
-                        lefttime=endtime-tmptime
-                        lefttimeminute=(lefttime.seconds)/60
-                        
-                        if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
-                            self.caucusTable.find({"_id":ctx.guild.id})
-                            self.caucusTable.update_one({"_id":ctx.guild.id},{"$set":{"time":lefttimeminute,"type":'mod'}})
-
-                        else:
-                            caucusTag={"_id":ctx.guild.id,"time":lefttimeminute,"type":'mod'}
-                            self.caucusTable.insert_one(caucusTag)
-
-                        await ctx.send("mod paused")
-                except asyncio.TimeoutError:
-                    await ctx.send(f"Mod is over!")
-                    
-                    voice_client=ctx.guild.voice_client
-                    YDL_OPTIONS = {
-            'format': 'bestaudio',
-            "force-ipv4":True,
-            'dump-pages':True,
-            'source_address':'0.0.0.0',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-                
-            }],
-            'outtmpl': 'song.%(ext)s',
-        }
-                    try:
-                        with YoutubeDL(YDL_OPTIONS) as ydl:
-                            ydl.download([url])
-                        voice_client.play(FFmpegPCMAudio("song.mp3"))
-                        voice_client.is_playing()
-                    except  utils.DownloadError:
-                        embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
-                        m= await ctx.channel.send(embed=embedVar)
-            return            
 
     
 
@@ -564,7 +432,139 @@ class Chair(commands.Cog):
     @commands.command(pass_context=True,brief='Resume currently paused caucus.', description='Resume a caucus if a caucus has been paused.')
     async def resume(self,ctx):
         
+        async def unmodtimer(ctx,args):
+            url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
+            sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+            sess=sesstag.get("session")
+            if sess==True:
+                args=args.split(' ')
+                try:
+                    t=args[0]
+                except ValueError:
+                                embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
+                                m= await ctx.channel.send(embed=embedVar)
+                                return
+                starttime=datetime.datetime.now()
+                
+                endtime=starttime+datetime.timedelta(minutes=t)
+                await ctx.send("The UnMod has started!")
+                def check(message):
+                    return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
+                try:
+                    m = await self.bot.wait_for("message", check=check, timeout=t*60)
+                    if m.content.lower() == "cancel":
+                        await ctx.send("unmod cancelled")
+                    if m.content.lower() == "pause":
+                        #handle data
+                        tmptime=datetime.datetime.now()
+                        
+                        lefttime=endtime-tmptime
+                        lefttimeminute=(lefttime.seconds)/60
+                        
+                        if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
+                            self.caucusTable.find({"_id":ctx.guild.id})
+                            self.caucusTable.update_one({"_id":ctx.guild.id},{"$set":{"time":lefttimeminute,"type":'unmod'}})
+
+                        else:
+                            caucusTag={"_id":ctx.guild.id,"time":lefttimeminute,"type":'unmod'}
+                            self.caucusTable.insert_one(caucusTag)
+
+                        await ctx.send("unmod paused")
                     
+                except asyncio.TimeoutError:
+                    await ctx.send(f"UnMod is over!")
+                    voice_client=ctx.guild.voice_client
+                    YDL_OPTIONS = {
+            'format': 'bestaudio',
+            "force-ipv4":True,
+            'dump-pages':True,
+            'source_address':'0.0.0.0',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+                
+            }],
+            'outtmpl': 'song.%(ext)s',
+        }
+                    try:
+                        with YoutubeDL(YDL_OPTIONS) as ydl:
+                            ydl.download([url])
+                        voice_client.play(FFmpegPCMAudio("song.mp3"))
+                        voice_client.is_playing()
+
+                    except  utils.DownloadError:
+                        embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
+                        m= await ctx.channel.send(embed=embedVar)
+            return
+
+
+        async def modtimer(ctx,args):
+                url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
+                sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+                sess=sesstag.get("session")
+                
+                if sess==True:
+                    args=args.split(' ')
+                    try:
+                        t=args[0]
+                    except ValueError:
+                                    embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
+                                    m= await ctx.channel.send(embed=embedVar)
+                                    return
+                    starttime=datetime.datetime.now()
+                    
+                    endtime=starttime+datetime.timedelta(minutes=t)
+                    
+                    await ctx.send("The Mod has started!")
+                    def check(message):
+                        return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
+                    try:
+                        m = await self.bot.wait_for("message", check=check, timeout=t*60)
+                        if m.content.lower() == "cancel":
+                            await ctx.send("mod cancelled")
+                        if m.content.lower() == "pause":
+                            #handle data
+                            tmptime=datetime.datetime.now()
+                            
+                            lefttime=endtime-tmptime
+                            lefttimeminute=(lefttime.seconds)/60
+                            
+                            if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
+                                self.caucusTable.find({"_id":ctx.guild.id})
+                                self.caucusTable.update_one({"_id":ctx.guild.id},{"$set":{"time":lefttimeminute,"type":'mod'}})
+
+                            else:
+                                caucusTag={"_id":ctx.guild.id,"time":lefttimeminute,"type":'mod'}
+                                self.caucusTable.insert_one(caucusTag)
+
+                            await ctx.send("mod paused")
+                    except asyncio.TimeoutError:
+                        await ctx.send(f"Mod is over!")
+                        
+                        voice_client=ctx.guild.voice_client
+                        YDL_OPTIONS = {
+                'format': 'bestaudio',
+                "force-ipv4":True,
+                'dump-pages':True,
+                'source_address':'0.0.0.0',
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': '192',
+                    
+                }],
+                'outtmpl': 'song.%(ext)s',
+            }
+                        try:
+                            with YoutubeDL(YDL_OPTIONS) as ydl:
+                                ydl.download([url])
+                            voice_client.play(FFmpegPCMAudio("song.mp3"))
+                            voice_client.is_playing()
+                        except  utils.DownloadError:
+                            embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
+                return            
         if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
             caucustag=self.caucusTable.find_one({"_id":ctx.guild.id})
             ctype=caucustag.get("type")
