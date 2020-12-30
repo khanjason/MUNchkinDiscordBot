@@ -238,7 +238,7 @@ class Chair(commands.Cog):
                     
                     lefttime=endtime-tmptime
                     lefttimeminute=(lefttime.seconds)/60
-                    print(lefttimeminute)
+                    
                     if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
                         self.caucusTable.find({"_id":ctx.guild.id})
                         self.caucusTable.update_one({"_id":ctx.guild.id},{"$set":{"time":lefttimeminute,"type":'mod'}})
@@ -290,12 +290,33 @@ class Chair(commands.Cog):
                             embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
                             m= await ctx.channel.send(embed=embedVar)
                             return
+            starttime=datetime.datetime.now()
+            
+            endtime=starttime+datetime.timedelta(minutes=t)
             await ctx.send("The UnMod has started!")
             def check(message):
-                return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
+                return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
             try:
                 m = await self.bot.wait_for("message", check=check, timeout=t*60)
-                await ctx.send("Unmod cancelled")
+                if m.content.lower() == "cancel":
+                    await ctx.send("unmod cancelled")
+                if m.content.lower() == "pause":
+                    #handle data
+                    tmptime=datetime.datetime.now()
+                    
+                    lefttime=endtime-tmptime
+                    lefttimeminute=(lefttime.seconds)/60
+                    
+                    if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
+                        self.caucusTable.find({"_id":ctx.guild.id})
+                        self.caucusTable.update_one({"_id":ctx.guild.id},{"$set":{"time":lefttimeminute,"type":'unmod'}})
+
+                    else:
+                        caucusTag={"_id":ctx.guild.id,"time":lefttimeminute,"type":'unmod'}
+                        self.caucusTable.insert_one(caucusTag)
+
+                    await ctx.send("unmod paused")
+                
             except asyncio.TimeoutError:
                 await ctx.send(f"UnMod is over!")
                 voice_client=ctx.guild.voice_client
@@ -399,7 +420,33 @@ class Chair(commands.Cog):
 
         m= await ctx.channel.send(embed=embedVar)
         
+    @commands.has_role('Chair')
+    @commands.command(pass_context=True,brief='Resume currently paused caucus.', description='Resume a caucus if a caucus has been paused.')
+    async def resume(self,ctx,*,args):
+        if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
+            caucustag=self.caucusTable.find_one({"_id":ctx.guild.id})
+            ctype=caucustag.get("type")
+            ctime=caucustag.get("time")
+            if ctype=='mod':
+                self.caucusTable.delete_one({"_id":ctx.guild.id})
+                embedVar = discord.Embed(title="Resume", description="Mod Resumed", color=discord.Color.from_rgb(78,134,219))
+    
+
+                await ctx.channel.send(embed=embedVar)
+                self.mod(ctx,*,[ctime])
+            if ctype=='unmod':
+                self.caucusTable.delete_one({"_id":ctx.guild.id})
+                embedVar = discord.Embed(title="Resume", description="Unmod Resumed", color=discord.Color.from_rgb(78,134,219))
+    
+
+                await ctx.channel.send(embed=embedVar)
+                self.unmod(ctx,*,[ctime])
             
+        else:
+            embedVar = discord.Embed(title="Error", description="No caucus is paused.", color=discord.Color.from_rgb(78,134,219))
+    
+
+            await ctx.channel.send(embed=embedVar)
             
 
     
