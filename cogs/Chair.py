@@ -423,7 +423,7 @@ class Chair(commands.Cog):
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Resume currently paused caucus.', description='Resume a caucus if a caucus has been paused.')
     async def resume(self,ctx,*,args):
-        def modtimer(ctx,args):
+        async def modtimer(ctx,args):
             url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
             sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
             sess=sesstag.get("session")
@@ -489,7 +489,7 @@ class Chair(commands.Cog):
                         embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
                         m= await ctx.channel.send(embed=embedVar)
         
-        def unmodtimer(ctx,args):
+        async def unmodtimer(ctx,args):
             url='https://www.youtube.com/watch?v=SK3g6f5jsRA'
             sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
             sess=sesstag.get("session")
