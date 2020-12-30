@@ -8,7 +8,7 @@ from collections import defaultdict
 from discord.ext import commands, tasks
 from discord.utils import get
 from youtube_dl import YoutubeDL, utils
-from datetime import datetime
+import datetime
 import pymongo
 import os
 from pymongo import MongoClient
@@ -221,7 +221,7 @@ class Chair(commands.Cog):
                             embedVar = discord.Embed(title="Error", description="Time must be a number.", color=discord.Color.from_rgb(78,134,219))
                             m= await ctx.channel.send(embed=embedVar)
                             return
-            starttime=datetime.now()
+            starttime=datetime.datetime.now()
             print(starttime)
             endtime=starttime+datetime.timedelta(minutes=t)
             print(endtime)
@@ -234,7 +234,7 @@ class Chair(commands.Cog):
                     await ctx.send("mod cancelled")
                 if m.content.lower() == "pause":
                     #handle data
-                    tmptime=datetime.now()
+                    tmptime=datetime.datetime.now()
                     lefttime=endtime-tmptime
                     if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
                         self.caucusTable.find({"_id":ctx.guild.id})
