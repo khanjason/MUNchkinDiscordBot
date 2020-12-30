@@ -562,15 +562,10 @@ class Chair(commands.Cog):
         
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Resume currently paused caucus.', description='Resume a caucus if a caucus has been paused.')
-    async def resume(self,ctx,*,args):
-        
-        embedVar = discord.Embed(title="Error", description="No caucus is paused.", color=discord.Color.from_rgb(78,134,219))
-    
-
-        await ctx.channel.send(embed=embedVar)
+    async def resume(self,ctx):
         
                     
-        '''if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
+        if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
             caucustag=self.caucusTable.find_one({"_id":ctx.guild.id})
             ctype=caucustag.get("type")
             ctime=caucustag.get("time")
@@ -595,7 +590,7 @@ class Chair(commands.Cog):
             embedVar = discord.Embed(title="Error", description="No caucus is paused.", color=discord.Color.from_rgb(78,134,219))
     
 
-            await ctx.channel.send(embed=embedVar)'''
+            await ctx.channel.send(embed=embedVar)
 
 
 
