@@ -20,6 +20,7 @@ class Chair(commands.Cog):
         self.db=self.cluster["Database1"]
         self.sessionTable=self.db["Session"]
         self.registerTable=self.db["Register"]
+        self.caucusTable=self.db["Caucus"]
         self.GSTable=self.db["GeneralSpeakers"]
         self.delegate=self.bot.get_cog('Delegate')
         
@@ -220,9 +221,10 @@ class Chair(commands.Cog):
                             return
             await ctx.send("The Mod has started!")
             def check(message):
-                return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
+                return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
             try:
                 m = await self.bot.wait_for("message", check=check, timeout=t*60)
+                await ctx.send(m)
                 await ctx.send("mod cancelled")
             except asyncio.TimeoutError:
                 await ctx.send(f"Mod is over!")
