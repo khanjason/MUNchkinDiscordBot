@@ -85,6 +85,9 @@ class Chair(commands.Cog):
             self.registerTable.update_one({"_id":ctx.guild.id},{"$set":{"register":{}}})
             self.GSTable.find({"_id":ctx.guild.id})
             self.GSTable.update_one({"_id":ctx.guild.id},{"$set":{"GS":[]}})
+            if self.caucusTable.find({"_id":ctx.guild.id}).count() > 0:
+                self.caucusTable.delete_one({"_id":ctx.guild.id})
+                
         else:
             #create
             
