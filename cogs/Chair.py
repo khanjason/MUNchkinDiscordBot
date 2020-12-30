@@ -574,16 +574,16 @@ class Chair(commands.Cog):
                 self.caucusTable.delete_one({"_id":ctx.guild.id})
                 embedVar = discord.Embed(title="Resume", description="Mod Resumed", color=discord.Color.from_rgb(78,134,219))
     
-
+                
                 await ctx.channel.send(embed=embedVar)
-                await modtimer(ctx,[ctime])
+                await self.mod(ctx,[ctime])
             if ctype=='unmod':
                 self.caucusTable.delete_one({"_id":ctx.guild.id})
                 embedVar = discord.Embed(title="Resume", description="Unmod Resumed", color=discord.Color.from_rgb(78,134,219))
     
 
                 await ctx.channel.send(embed=embedVar)
-                await unmodtimer(ctx,[ctime])
+                await self.unmod(ctx,[ctime])
             
         else:
             embedVar = discord.Embed(title="Error", description="No caucus is paused.", color=discord.Color.from_rgb(78,134,219))
