@@ -129,8 +129,10 @@ class Delegate(commands.Cog):
     async def note(self,ctx, *,args):
         for m in ctx.message.mentions:
             member=m
+        print(member)
         args=args.split(' ')
         text=' '.join(word for word in args[1:])
+        print(text)
         sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
         sess=sesstag.get("session")
         
