@@ -96,31 +96,31 @@ class Delegate(commands.Cog):
     async def notebook(self,ctx):
         sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
         sess=sesstag.get("session")
-        print(sess)
+        
         if sess==True:
             if self.noteTable.find({"_id":ctx.guild.id}).count() > 0:
                 notetag=self.noteTable.find_one({"_id":ctx.guild.id})
                 members=notetag.get("members")
-                if ctx.author not in members:
-                    members.append(ctx.author)
+                if ctx.author.id not in members:
+                    members.append(ctx.author.id)
                     self.noteTable.find({"_id":ctx.guild.id})
                     self.noteTable.update_one({"_id":ctx.guild.id},{"$set":{"members":members}})
 
-                    embedVar = discord.Embed(title="Note Passing", description="Note passing enabled for "+ctx.author, color=discord.Color.from_rgb(78,134,219))
+                    embedVar = discord.Embed(title="Note Passing", description="Note passing enabled for "+ctx.author.mention, color=discord.Color.from_rgb(78,134,219))
                 else:
-                    members.remove(ctx.author)
+                    members.remove(ctx.author.id)
                     self.noteTable.find({"_id":ctx.guild.id})
                     self.noteTable.update_one({"_id":ctx.guild.id},{"$set":{"members":members}})
 
-                    embedVar = discord.Embed(title="Note Passing", description="Note passing disabled for "+ctx.author, color=discord.Color.from_rgb(78,134,219))
+                    embedVar = discord.Embed(title="Note Passing", description="Note passing disabled for "+ctx.author.mention, color=discord.Color.from_rgb(78,134,219))
             else:
-                print('else')
+                
                 tmp=[]
-                tmp.append(ctx.author)
+                tmp.append(ctx.author.id)
                 print(tmp)
                 noteTag={"_id":ctx.guild.id,"members":tmp}
                 self.noteTable.insert_one(noteTag)
-                embedVar = discord.Embed(title="Note Passing", description="Note passing enabled for "+ctx.author, color=discord.Color.from_rgb(78,134,219))
+                embedVar = discord.Embed(title="Note Passing", description="Note passing enabled for "+ctx.author.mention, color=discord.Color.from_rgb(78,134,219))
             await ctx.channel.send(embed=embedVar)
         else:
             await ctx.channel.send("There is no session in progress.")
