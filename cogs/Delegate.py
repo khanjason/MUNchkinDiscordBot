@@ -96,6 +96,7 @@ class Delegate(commands.Cog):
     async def notebook(self,ctx):
         sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
         sess=sesstag.get("session")
+        print(sess)
         if sess==True:
             if self.noteTable.find({"_id":ctx.guild.id}).count() > 0:
                 notetag=self.noteTable.find_one({"_id":ctx.guild.id})
@@ -113,8 +114,10 @@ class Delegate(commands.Cog):
 
                     embedVar = discord.Embed(title="Note Passing", description="Note passing disabled for "+ctx.author, color=discord.Color.from_rgb(78,134,219))
             else:
+                print('else')
                 tmp=[]
                 tmp.append(ctx.author)
+                print(tmp)
                 noteTag={"_id":ctx.guild.id,"members":tmp}
                 self.noteTable.insert_one(noteTag)
                 embedVar = discord.Embed(title="Note Passing", description="Note passing enabled for "+ctx.author, color=discord.Color.from_rgb(78,134,219))
