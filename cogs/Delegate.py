@@ -16,6 +16,7 @@ class Delegate(commands.Cog):
         self.sessionTable=self.db["Session"]
         self.registerTable=self.db["Register"]
         self.GSTable=self.db["GeneralSpeakers"]
+        self.noteTable=self.db["Notebook"]
         
         
     @commands.command(brief='Add yourself to GS list.', description='Adds your name to the general speakers list.')
@@ -90,5 +91,38 @@ class Delegate(commands.Cog):
         embedVar.add_field(name="Unmoderated Caucus", value="Unmoderated caucuses are not chaired and are used for open talk among delegates and writing resolutions.", inline=False)
         embedVar.add_field(name="Resolutions", value="Resolutions are made up of preambulatory and operative clauses, describing desired actions to be taken. Resolutions can be introduced and debated, and voted on to finalise a debate.", inline=False)
         m= await ctx.channel.send(embed=embedVar)
+
+    @commands.command(brief='Toggle note-passing.', description='Enable/Disable sending and receiving notes.')
+    async def notebook(self,ctx):
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        if sess==True:
+            if self.noteTable.find({"_id":ctx.guild.id}).count() > 0:
+                notetag=self.noteTable.find_one({"_id":ctx.guild.id})
+                members=notetag.get("members")
+                if ctx.author not in members:
+                    members.append(ctx.author)
+                    self.noteTable.find({"_id":ctx.guild.id})
+                    self.noteTable.update_one({"_id":ctx.guild.id},{"$set":{"members":members}})
+
+                    embedVar = discord.Embed(title="Note Passing", description="Note passing enabled for "+ctx.author, color=discord.Color.from_rgb(78,134,219))
+                else:
+                    members.remove(ctx.author)
+                    self.noteTable.find({"_id":ctx.guild.id})
+                    self.noteTable.update_one({"_id":ctx.guild.id},{"$set":{"members":members}})
+
+                    embedVar = discord.Embed(title="Note Passing", description="Note passing disabled for "+ctx.author, color=discord.Color.from_rgb(78,134,219))
+            else:
+                tmp=[]
+                tmp.append(ctx.author)
+                noteTag={"_id":ctx.guild.id,"members":tmp}
+                self.noteTable.insert_one(noteTag)
+                embedVar = discord.Embed(title="Note Passing", description="Note passing enabled for "+ctx.author, color=discord.Color.from_rgb(78,134,219))
+            await ctx.channel.send(embed=embedVar)
+        else:
+            await ctx.channel.send("There is no session in progress.")
+                
+
+    
 def setup(bot):
     bot.add_cog(Delegate(bot))
