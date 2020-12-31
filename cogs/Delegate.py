@@ -126,7 +126,7 @@ class Delegate(commands.Cog):
             await ctx.channel.send("There is no session in progress.")
                 
     @commands.command(brief='Send a note.', description='Send a note by mentioning the recipient followed by the message.')
-    async def note(self,ctx,member : discord.Member,t:str):
+    async def note(self,ctx,member : discord.User,t:str):
         
         textli=ctx.message.content.split(' ')
         text=' '.join(word for word in textli[2:])
