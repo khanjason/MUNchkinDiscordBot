@@ -117,7 +117,7 @@ class Delegate(commands.Cog):
                 
                 tmp=[]
                 tmp.append(ctx.author.id)
-                print(tmp)
+                
                 noteTag={"_id":ctx.guild.id,"members":tmp}
                 self.noteTable.insert_one(noteTag)
                 embedVar = discord.Embed(title="Note Passing", description="Note passing enabled for "+ctx.author.mention, color=discord.Color.from_rgb(78,134,219))
@@ -125,7 +125,21 @@ class Delegate(commands.Cog):
         else:
             await ctx.channel.send("There is no session in progress.")
                 
-
-    
+    @commands.command(brief='Send a note.', description='Send a note by mentioning the recipient followed by the message.')
+    async def note(self,ctx,member : discord.Member, text : str):
+        sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
+        sess=sesstag.get("session")
+        
+        if sess==True:
+            notetag= self.noteTable.find_one({"_id":ctx.guild.id})
+            memberlist=notetag.get("members")
+            if member.id in memberlist and ctx.author.id in memberlist:
+                
+                await self.bot.send_message(member, text)
+            else:
+                embedVar = discord.Embed(title="Error", description="Sender/Recipient has not enabled notepassing", color=discord.Color.from_rgb(78,134,219))
+                await ctx.channel.send(embed=embedVar)
+        else:
+            await ctx.channel.send("There is no session in progress.")
 def setup(bot):
     bot.add_cog(Delegate(bot))
