@@ -126,9 +126,11 @@ class Delegate(commands.Cog):
             await ctx.channel.send("There is no session in progress.")
                 
     @commands.command(brief='Send a note.', description='Send a note by mentioning the recipient followed by the message.')
-    async def note(self,ctx,member : discord.Member, *,args):
+    async def note(self,ctx, *,args):
+        for m in ctx.message.mentions:
+            member=m
         args=args.split(' ')
-        text=' '.join(word for word in args)
+        text=' '.join(word for word in args[1:])
         sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
         sess=sesstag.get("session")
         
