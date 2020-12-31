@@ -139,6 +139,7 @@ class Delegate(commands.Cog):
         if sess==True:
             notetag= self.noteTable.find_one({"_id":ctx.guild.id})
             memberlist=notetag.get("members")
+            print(member.id)
             if member.id in memberlist and ctx.author.id in memberlist:
                 
                 await member.send('Message from '+ctx.author+' : '+text)
