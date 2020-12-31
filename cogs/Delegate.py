@@ -127,6 +127,8 @@ class Delegate(commands.Cog):
                 
     @commands.command(brief='Send a note.', description='Send a note by mentioning the recipient followed by the message.')
     async def note(self,ctx,member : discord.Member, text : str):
+        print(member)
+        print(text)
         sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
         sess=sesstag.get("session")
         
