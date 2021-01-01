@@ -16,6 +16,9 @@ db=cluster["Database1"]
 prefixTable=db["Prefix"]
 
 async def getPrefix(bot,message):
+    if isinstance(message.channel, discord.channel.DMChannel):
+            pref='!'
+            return pref
     if prefixTable.find({"_id":message.guild.id}).count() > 0:
         preftag=prefixTable.find_one({"_id":message.guild.id})
         pref=preftag.get("prefix")
@@ -28,16 +31,21 @@ bot.remove_command('help')
 
 @bot.command()
 async def prefix(ctx,*,args):
-    args=args.split(' ')
-    p=args[0]
-    if prefixTable.find({"_id":ctx.guild.id}).count() > 0:
-        prefixTable.update_one({"_id":ctx.guild.id},{"$set":{"prefix":p}})
-    else:
-        prefTag={"_id":ctx.guild.id,"prefix":p}
-        prefixTable.insert_one(prefTag)        
+    if isinstance(ctx.channel, discord.channel.DMChannel):
+            embedVar = discord.Embed(title="Error", description="Not in a server.", color=discord.Color.from_rgb(78,134,219))
 
-    embedVar= discord.Embed(title="Prefix", description="Prefix has been changed to "+p, color=discord.Color.from_rgb(78,134,219))
-    await ctx.channel.send(embed=embedVar)    
+            await ctx.send(embed=embedVar)
+    else:
+        args=args.split(' ')
+        p=args[0]
+        if prefixTable.find({"_id":ctx.guild.id}).count() > 0:
+            prefixTable.update_one({"_id":ctx.guild.id},{"$set":{"prefix":p}})
+        else:
+            prefTag={"_id":ctx.guild.id,"prefix":p}
+            prefixTable.insert_one(prefTag)        
+
+        embedVar= discord.Embed(title="Prefix", description="Prefix has been changed to "+p, color=discord.Color.from_rgb(78,134,219))
+        await ctx.channel.send(embed=embedVar)    
 
 
 @bot.event
