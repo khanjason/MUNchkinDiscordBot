@@ -141,6 +141,7 @@ class Delegate(commands.Cog):
             if member.id in memberlist and ctx.author.id in memberlist:
                 print('valid')
                 print(ctx.author)
+                await member.send(str(ctx.author))
                 await member.send('Message from '+' : '+text)
                 #await member.send('Message from '+ctx.author+' : '+text)
             else:
