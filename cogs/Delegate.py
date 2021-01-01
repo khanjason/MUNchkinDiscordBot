@@ -140,7 +140,8 @@ class Delegate(commands.Cog):
             memberlist=notetag.get("members")
             if member.id in memberlist and ctx.author.id in memberlist:
                 print('valid')
-                await member.send('Message from '+ctx.author+' : '+text)
+                await member.send(text)
+                #await member.send('Message from '+ctx.author+' : '+text)
             else:
                 embedVar = discord.Embed(title="Error", description="Sender/Recipient has not enabled notepassing", color=discord.Color.from_rgb(78,134,219))
                 await ctx.channel.send(embed=embedVar)
