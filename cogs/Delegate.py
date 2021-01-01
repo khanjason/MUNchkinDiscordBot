@@ -127,11 +127,8 @@ class Delegate(commands.Cog):
                 
     @commands.command(brief='Send a note.', description='Send a note by mentioning the recipient followed by the message.')
     async def note(self,ctx,member: discord.Member, *, content):
-               
-        #textli=ctx.message.content.split(' ')
         textli=content.split(' ')
         text=' '.join(word for word in textli)
-        print(text)
         sesstag = self.sessionTable.find_one({"_id":ctx.guild.id})
         sess=sesstag.get("session")
         
@@ -139,11 +136,7 @@ class Delegate(commands.Cog):
             notetag= self.noteTable.find_one({"_id":ctx.guild.id})
             memberlist=notetag.get("members")
             if member.id in memberlist and ctx.author.id in memberlist:
-                print('valid')
-                print(ctx.author)
-                await member.send(str(ctx.author))
-                await member.send('Message from '+' : '+text)
-                #await member.send('Message from '+ctx.author+' : '+text)
+                await member.send('Message from '+str(ctx.author)+' : '+text)
             else:
                 embedVar = discord.Embed(title="Error", description="Sender/Recipient has not enabled notepassing", color=discord.Color.from_rgb(78,134,219))
                 await ctx.channel.send(embed=embedVar)
