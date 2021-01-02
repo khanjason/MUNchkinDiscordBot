@@ -23,6 +23,8 @@ async def getPrefix(bot,message):
         preftag=prefixTable.find_one({"_id":message.guild.id})
         pref=preftag.get("prefix")
     else:
+        prefTag={"_id":ctx.guild.id,"prefix":'!'}
+        prefixTable.insert_one(prefTag)
         pref='!'
     return pref
 
@@ -82,8 +84,7 @@ async def help(ctx):
     if prefixTable.find({"_id":message.guild.id}).count() > 0:
         preftag=prefixTable.find_one({"_id":message.guild.id})
         p=preftag.get("prefix")
-    else:
-        p='!'
+    
     
     embedVar= discord.Embed(title="MUNchkin Help", description="List of commands for MUNchkin.", color=discord.Color.from_rgb(78,134,219))
     embedVar.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/UN_flag.png/1024px-UN_flag.png")
