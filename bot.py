@@ -24,6 +24,9 @@ async def getPrefix(bot,message):
         pref=preftag.get("prefix")
     else:
         pref='!'
+        prefTag={"_id":ctx.guild.id,"prefix":pref}
+        prefixTable.insert_one(prefTag)
+        
     return pref
 
 bot = commands.Bot(command_prefix=getPrefix)
@@ -79,8 +82,11 @@ for filename in os.listdir('./cogs'):
 
 @bot.command(pass_content=True)
 async def help(ctx):
-    ptag=prefixTable.find_one({"_id":ctx.guild.id})
-    p=ptag.get("prefix")
+    if prefixTable.find({"_id":message.guild.id}).count() > 0:
+        preftag=prefixTable.find_one({"_id":message.guild.id})
+        p=preftag.get("prefix")
+    
+    
     embedVar= discord.Embed(title="MUNchkin Help", description="List of commands for MUNchkin.", color=discord.Color.from_rgb(78,134,219))
     embedVar.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/UN_flag.png/1024px-UN_flag.png")
     embedVar.add_field(name="Current Prefix", value="Current prefix is set to: "+p, inline=False)
