@@ -24,7 +24,7 @@ async def getPrefix(bot,message):
         pref=preftag.get("prefix")
     else:
         pref='!'
-        prefTag={"_id":ctx.guild.id,"prefix":pref}
+        prefTag={"_id":message.guild.id,"prefix":pref}
         prefixTable.insert_one(prefTag)
         
     return pref
