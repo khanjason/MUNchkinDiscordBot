@@ -172,6 +172,7 @@ class Delegate(commands.Cog):
             sess=sesstag.get("session")
             
             if sess==True:
+                await ctx.message.delete()
                 notetag= self.noteTable.find_one({"_id":ctx.guild.id})
                 memberlist=notetag.get("members")
                 if member.id in memberlist and ctx.author.id in memberlist:
