@@ -114,12 +114,14 @@ async def help(ctx):
     embedVar.add_field(name=p+"rules", value="Provides simplified ruleset for Harvard style MUN.", inline=True)
     embedVar.add_field(name=p+"notebook", value="Enable notepassing for yourself.", inline=True)
     embedVar.add_field(name=p+"note [@user] message", value="Send a note to a user.", inline=True)
-    embedVar.add_field(name="Support MUNchkin", value="Useful links for using MUNchkin.", inline=False)
-    embedVar.add_field(name="Invite", value="[Add me!](https://discord.com/oauth2/authorize?client_id=767330479757197323&permissions=0&scope=bot)", inline=True)
-    embedVar.add_field(name="Support Server", value='[Join!](https://discord.gg/94ShKfuqrk)', inline=True)
-    embedVar.add_field(name="Vote", value='[Rate me!](https://top.gg/bot/767330479757197323/vote)', inline=True)
-    embedVar.add_field(name="Source Code", value='[View!](https://github.com/khanjason/MUNchkinDiscordBot)', inline=True)
+    embedVar2= discord.Embed(title="Support MUNchkin", description="Useful links for using MUNchkin.", color=discord.Color.from_rgb(78,134,219))
+    
+    embedVar2.add_field(name="Invite", value="[Add me!](https://discord.com/oauth2/authorize?client_id=767330479757197323&permissions=0&scope=bot)", inline=True)
+    embedVar2.add_field(name="Support Server", value='[Join!](https://discord.gg/94ShKfuqrk)', inline=True)
+    embedVar2.add_field(name="Vote", value='[Rate me!](https://top.gg/bot/767330479757197323/vote)', inline=True)
+    embedVar2.add_field(name="Source Code", value='[View!](https://github.com/khanjason/MUNchkinDiscordBot)', inline=True)
     await ctx.channel.send(embed=embedVar)
+    await ctx.channel.send(embed=embedVar2)
 
 @bot.event
 async def on_command_error(ctx, error):
