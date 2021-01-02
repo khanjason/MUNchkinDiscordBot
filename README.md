@@ -98,7 +98,7 @@ Provides simplified ruleset for Harvard style MUN.
 Enable/disable notepassing for yourself.
 
 !note [@user] message
-Send a note to a user (you and them both need notepassig enabled).
+Send a note to a user (you and them both need notepassing enabled).
 ```
 
 
