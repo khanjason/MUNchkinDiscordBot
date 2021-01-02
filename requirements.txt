@@ -3,3 +3,7 @@ discord.py[voice]
 youtube_dl
 colorlog
 PyNaCl
+pymongo
+pymongo[srv]
+dnspython
+datetime
