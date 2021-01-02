@@ -69,7 +69,7 @@ for filename in os.listdir('./cogs'):
 
 @bot.command(pass_content=True)
 async def help(ctx):
-    print(getPrefix(ctx))
+    print(getPrefix)
     p=command_prefix
     print(p)
     embedVar= discord.Embed(title="MUNchkin Help", description="List of commands for MUNchkin.", color=discord.Color.from_rgb(78,134,219))
