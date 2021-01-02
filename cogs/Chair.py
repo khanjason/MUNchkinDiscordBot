@@ -65,8 +65,10 @@ class Chair(commands.Cog):
                 await ctx.channel.send(embed=embedVar)
                 
             else:
-                await connected.channel.connect() 
-                await ctx.channel.send("Session has started!")
+                await connected.channel.connect()
+                embedVar = discord.Embed(title="Session", description="Session has started!", color=discord.Color.from_rgb(78,134,219))
+
+                await ctx.channel.send(embed=embedVar)
         else:
             embedVar = discord.Embed(title="Error", description="Please join a voice channel.", color=discord.Color.from_rgb(78,134,219))
             await ctx.send(embed=embedVar)
@@ -92,17 +94,20 @@ class Chair(commands.Cog):
                 self.noteTable.delete_one({"_id":ctx.guild.id})
         else:
             #create
-            
-            await ctx.channel.send("There is no session in progress.")
-        
+            embedVar = discord.Embed(title="Error", description="There is no session in progress.", color=discord.Color.from_rgb(78,134,219))
+
+            await ctx.channel.send(embed=embedVar)
+
+
        
         
         connected = ctx.author.voice
         if connected:
             server=ctx.message.guild.voice_client
             await server.disconnect()
-        
-        await ctx.channel.send("Session has ended!")
+        embedVar = discord.Embed(title="Session", description="Session has ended!", color=discord.Color.from_rgb(78,134,219))
+
+        await ctx.channel.send(embed=embedVar)
     @commands.has_role('Chair')  
     @commands.command(brief='View the general speakers list.', description='Prints out the current general speakers list.')
     async def GS(self, ctx):
@@ -123,6 +128,10 @@ class Chair(commands.Cog):
                     embedVar.add_field(name="Countries:", value=t, inline=False)
             
                     await ctx.channel.send(embed=embedVar)
+        else:
+                embedVar = discord.Embed(title="Error", description="There is no session in progress.", color=discord.Color.from_rgb(78,134,219))
+
+                await ctx.channel.send(embed=embedVar)
                     
     @commands.has_role('Chair')  
     @commands.command(brief='Removes first delegate from general speakers list.', description='Remove first delegate from general speakers list.\n Used just after a speaker has finished.')
@@ -139,8 +148,12 @@ class Chair(commands.Cog):
                     t=gslist[0]
                     gslist=gslist[1:]
                     self.GSTable.update_one({"_id":ctx.guild.id},{"$set":{"GS":gslist}})
-                                    
-                    await ctx.channel.send(str(t)+' was removed from the GS list.')
+                    embedVar = discord.Embed(title="General Speakers", description=str(t)+' was removed from the GS list.', color=discord.Color.from_rgb(78,134,219))
+                    await ctx.channel.send(embed=embedVar)
+        else:
+                embedVar = discord.Embed(title="Error", description="There is no session in progress.", color=discord.Color.from_rgb(78,134,219))
+
+                await ctx.channel.send(embed=embedVar)
                 
 
 
@@ -167,14 +180,23 @@ class Chair(commands.Cog):
                     return message.channel == ctx.channel and message.author == ctx.author and message.content.lower() == "cancel"
                 try:
                     m = await self.bot.wait_for("message", check=check, timeout=(t-10))
-                    await ctx.send("Cancelled")
+                    embedVar = discord.Embed(title="Speaker", description='Speaker cancelled', color=discord.Color.from_rgb(78,134,219))
+                    await ctx.channel.send(embed=embedVar)
                 except asyncio.TimeoutError:
-                    await ctx.send("10 seconds left, "+u)
+                    
+                    embedVar = discord.Embed(title="Update", description="10 seconds left, "+u, color=discord.Color.from_rgb(78,134,219))
+                    await ctx.channel.send(embed=embedVar)
                     try:
                         m = await self.bot.wait_for("message", check=check, timeout=(10))
-                        await ctx.send("Cancelled")
+                        embedVar = discord.Embed(title="Speaker", description='Speaker cancelled', color=discord.Color.from_rgb(78,134,219))
+                        await ctx.channel.send(embed=embedVar)
                     except asyncio.TimeoutError:
-                        await ctx.send("Time is up, "+u+'!')
+                        embedVar = discord.Embed(title="Update", description="Time is up, "+u+'!', color=discord.Color.from_rgb(78,134,219))
+                        await ctx.channel.send(embed=embedVar)
+        else:
+                embedVar = discord.Embed(title="Error", description="There is no session in progress.", color=discord.Color.from_rgb(78,134,219))
+
+                await ctx.channel.send(embed=embedVar)
                                         
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Proposes a caucus.', description='requires [type].\n If type is mod, structure is !propose mod [total time in min] [speakers time in sec] [country proposed] [topic].\n If other type, requires [type] [total time in min] [country proposed].')
@@ -219,6 +241,10 @@ class Chair(commands.Cog):
                         await m.add_reaction("\U0001F44D")
                         await m.add_reaction("\U0001F44E")
                         await m.add_reaction('\N{CROSS MARK}')
+        else:
+                embedVar = discord.Embed(title="Error", description="There is no session in progress.", color=discord.Color.from_rgb(78,134,219))
+
+                await ctx.channel.send(embed=embedVar)
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Starts a moderated caucus.', description='Requires !mod [total time in min].\n Starts a timer.')
     async def mod(self,ctx, *,args):
@@ -237,14 +263,17 @@ class Chair(commands.Cog):
             starttime=datetime.datetime.now()
             
             endtime=starttime+datetime.timedelta(minutes=t)
+            embedVar = discord.Embed(title="Mod", description="The Mod has started!", color=discord.Color.from_rgb(78,134,219))
+            m= await ctx.channel.send(embed=embedVar)
             
-            await ctx.send("The Mod has started!")
             def check(message):
                 return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
             try:
                 m = await self.bot.wait_for("message", check=check, timeout=t*60)
                 if m.content.lower() == "cancel":
-                    await ctx.send("mod cancelled")
+                    embedVar = discord.Embed(title="Mod", description="Mod cancelled.", color=discord.Color.from_rgb(78,134,219))
+                    m= await ctx.channel.send(embed=embedVar)
+                    
                 if m.content.lower() == "pause":
                     #handle data
                     tmptime=datetime.datetime.now()
@@ -260,9 +289,13 @@ class Chair(commands.Cog):
                         caucusTag={"_id":ctx.guild.id,"time":lefttimeminute,"type":'mod'}
                         self.caucusTable.insert_one(caucusTag)
 
-                    await ctx.send("mod paused")
+                    
+                    embedVar = discord.Embed(title="Mod", description="Mod paused.", color=discord.Color.from_rgb(78,134,219))
+                    m= await ctx.channel.send(embed=embedVar)
             except asyncio.TimeoutError:
-                await ctx.send(f"Mod is over!")
+                embedVar = discord.Embed(title="Mod", description="Mod is over!", color=discord.Color.from_rgb(78,134,219))
+                m= await ctx.channel.send(embed=embedVar)
+                
                 
                 voice_client=ctx.guild.voice_client
                 YDL_OPTIONS = {
@@ -286,6 +319,10 @@ class Chair(commands.Cog):
                 except  utils.DownloadError:
                     embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
                     m= await ctx.channel.send(embed=embedVar)
+        else:
+                embedVar = discord.Embed(title="Error", description="There is no session in progress.", color=discord.Color.from_rgb(78,134,219))
+
+                await ctx.channel.send(embed=embedVar)
                 
                 
                 
@@ -306,13 +343,16 @@ class Chair(commands.Cog):
             starttime=datetime.datetime.now()
             
             endtime=starttime+datetime.timedelta(minutes=t)
-            await ctx.send("The UnMod has started!")
+            embedVar = discord.Embed(title="Unmod", description="The Unmod has started!", color=discord.Color.from_rgb(78,134,219))
+            m= await ctx.channel.send(embed=embedVar)
+            
             def check(message):
                 return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
             try:
                 m = await self.bot.wait_for("message", check=check, timeout=t*60)
                 if m.content.lower() == "cancel":
-                    await ctx.send("unmod cancelled")
+                    embedVar = discord.Embed(title="Unmod", description="Unmod cancelled.", color=discord.Color.from_rgb(78,134,219))
+                    m= await ctx.channel.send(embed=embedVar)
                 if m.content.lower() == "pause":
                     #handle data
                     tmptime=datetime.datetime.now()
@@ -328,10 +368,13 @@ class Chair(commands.Cog):
                         caucusTag={"_id":ctx.guild.id,"time":lefttimeminute,"type":'unmod'}
                         self.caucusTable.insert_one(caucusTag)
 
-                    await ctx.send("unmod paused")
+                    
+                    embedVar = discord.Embed(title="Unmod", description="Unmod paused.", color=discord.Color.from_rgb(78,134,219))
+                    m= await ctx.channel.send(embed=embedVar)
                 
             except asyncio.TimeoutError:
-                await ctx.send(f"UnMod is over!")
+                embedVar = discord.Embed(title="Unmod", description="Unmod is over!", color=discord.Color.from_rgb(78,134,219))
+                m= await ctx.channel.send(embed=embedVar)
                 voice_client=ctx.guild.voice_client
                 YDL_OPTIONS = {
         'format': 'bestaudio',
@@ -355,6 +398,10 @@ class Chair(commands.Cog):
                 except  utils.DownloadError:
                     embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
                     m= await ctx.channel.send(embed=embedVar)
+        else:
+                embedVar = discord.Embed(title="Error", description="There is no session in progress.", color=discord.Color.from_rgb(78,134,219))
+
+                await ctx.channel.send(embed=embedVar)
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='Register a delegate.', description='Requires !register [delegate name] [status].\n Status can be present (p),present and voting(pv) or absent (a)')
     async def register(self,ctx,*,args):
@@ -371,14 +418,21 @@ class Chair(commands.Cog):
             self.registerTable.update_one({"_id":ctx.guild.id},{"$set":{"register":reg}})
 
             if status=='p':
-                await ctx.send(member.title()+" is present!")
+                embedVar = discord.Embed(title=member.title(), description="Present", color=discord.Color.from_rgb(78,134,219))
+                m= await ctx.channel.send(embed=embedVar)
             if status=='pv':
-                await ctx.send(member.title()+" is present and voting!")
+                embedVar = discord.Embed(title=member.title(), description="Present and Voting", color=discord.Color.from_rgb(78,134,219))
+                m= await ctx.channel.send(embed=embedVar)
             if status=='a':
-                await ctx.send(member.title()+" is absent!")
+                embedVar = discord.Embed(title=member.title(), description="Absent", color=discord.Color.from_rgb(78,134,219))
+                m= await ctx.channel.send(embed=embedVar)
             elif status not in ['p','pv','a']:
                 embedVar = discord.Embed(title="Error", description="Not a valid registration status. Use p, pv or a.", color=discord.Color.from_rgb(78,134,219))
                 m= await ctx.channel.send(embed=embedVar)
+        else:
+                embedVar = discord.Embed(title="Error", description="There is no session in progress.", color=discord.Color.from_rgb(78,134,219))
+
+                await ctx.channel.send(embed=embedVar)
     @commands.has_role('Chair')
     @commands.command(pass_context=True,brief='View the register.', description='Displays all registered delegations and their statuses.')
     async def viewRegister(self,ctx):
@@ -400,6 +454,10 @@ class Chair(commands.Cog):
                 embedVar.add_field(name=k, value=t, inline=False)
 
             await ctx.channel.send(embed=embedVar)
+        else:
+                embedVar = discord.Embed(title="Error", description="There is no session in progress.", color=discord.Color.from_rgb(78,134,219))
+
+                await ctx.channel.send(embed=embedVar)
             
             
             
@@ -418,6 +476,10 @@ class Chair(commands.Cog):
                 await m.add_reaction("\U0001F44D")
                 await m.add_reaction("\U0001F44E")
                 await m.add_reaction('\N{CROSS MARK}')
+        else:
+                embedVar = discord.Embed(title="Error", description="There is no session in progress.", color=discord.Color.from_rgb(78,134,219))
+
+                await ctx.channel.send(embed=embedVar)
                 
                 
 
@@ -427,8 +489,12 @@ class Chair(commands.Cog):
         
         member = user
         role = get(ctx.message.guild.roles, name="Chair")
-        await member.add_roles(role)
-        embedVar = discord.Embed(title="Chair Role", description="Role was given to "+str(member), color=discord.Color.from_rgb(78,134,219))
+        try:
+            await member.add_roles(role)
+            embedVar = discord.Embed(title="Chair Role", description="Role was given to "+str(member), color=discord.Color.from_rgb(78,134,219))
+        except:
+            embedVar = discord.Embed(title="Error", description="Could not give role. Did you give MUNchkin the 'Manage Roles' permission?", color=discord.Color.from_rgb(78,134,219))
+
     
 
         m= await ctx.channel.send(embed=embedVar)
@@ -473,18 +539,25 @@ class Chair(commands.Cog):
                 
                 endtime=starttime+datetime.timedelta(minutes=t)
                 if ctype=='mod':
-                    await ctx.send("The Mod has started!")
+                    embedVar = discord.Embed(title="Mod", description="The Mod has started!", color=discord.Color.from_rgb(78,134,219))
+                    m= await ctx.channel.send(embed=embedVar)
+                    
                 else:
-                    await ctx.send("The unmod has started!")
+                    embedVar = discord.Embed(title="Unmod", description="The unmod has started!", color=discord.Color.from_rgb(78,134,219))
+                    m= await ctx.channel.send(embed=embedVar)
+                    
                 def check(message):
                     return message.channel == ctx.channel and message.author == ctx.author and (message.content.lower() == "cancel" or message.content.lower() == "pause") 
                 try:
                     m = await self.bot.wait_for("message", check=check, timeout=t*60)
                     if m.content.lower() == "cancel":
                         if ctype=='mod':
-                            await ctx.send('mod cancelled')
+                            embedVar = discord.Embed(title="Mod", description="Mod cancelled.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
+                            
                         else:
-                            await ctx.send("unmod cancelled")
+                            embedVar = discord.Embed(title="Unmod", description="Unmod cancelled.", color=discord.Color.from_rgb(78,134,219))
+                            m= await ctx.channel.send(embed=embedVar)
                     if m.content.lower() == "pause":
                         #handle data
                         tmptime=datetime.datetime.now()
@@ -499,14 +572,15 @@ class Chair(commands.Cog):
                         else:
                             caucusTag={"_id":ctx.guild.id,"time":lefttimeminute,"type":ctype}
                             self.caucusTable.insert_one(caucusTag)
-
-                        await ctx.send(ctype+" paused")
+                        embedVar = discord.Embed(title=ctype.title(), description=ctype+" paused.", color=discord.Color.from_rgb(78,134,219))
+                        m= await ctx.channel.send(embed=embedVar)
+                        
                     
                 except asyncio.TimeoutError:
-                    if ctype=='mod':
-                        await ctx.send('Mod is over!')
-                    else:
-                        await ctx.send(f"UnMod is over!")
+                    
+                    embedVar = discord.Embed(title=ctype.title(), description=ctype.title()+" is over!", color=discord.Color.from_rgb(78,134,219))
+                    m= await ctx.channel.send(embed=embedVar)
+                        
                     voice_client=ctx.guild.voice_client
                     YDL_OPTIONS = {
             'format': 'bestaudio',
@@ -530,6 +604,10 @@ class Chair(commands.Cog):
                     except  utils.DownloadError:
                         embedVar = discord.Embed(title="Error", description="YoutubeDL failed to download Gavel Sound Effect.", color=discord.Color.from_rgb(78,134,219))
                         m= await ctx.channel.send(embed=embedVar)
+            else:
+                embedVar = discord.Embed(title="Error", description="There is no session in progress.", color=discord.Color.from_rgb(78,134,219))
+
+                await ctx.channel.send(embed=embedVar)
             
         else:
             embedVar = discord.Embed(title="Error", description="No caucus is paused.", color=discord.Color.from_rgb(78,134,219))
