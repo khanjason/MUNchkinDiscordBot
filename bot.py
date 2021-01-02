@@ -36,6 +36,7 @@ async def prefix(ctx,*,args):
 
             await ctx.send(embed=embedVar)
     else:
+        print(ctx.author.roles)
         if ('Chair' in ctx.author.roles):
             args=args.split(' ')
             p=args[0]
