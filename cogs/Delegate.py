@@ -172,7 +172,12 @@ class Delegate(commands.Cog):
             sess=sesstag.get("session")
             
             if sess==True:
-                await ctx.message.delete()
+                try:
+                    await ctx.message.delete()
+                except:
+                    embedVar = discord.Embed(title="Error", description="Could not delete message. Did you give MUNchkin the 'Manage Messages' permission?", color=discord.Color.from_rgb(78,134,219))
+
+                    await ctx.send(embed=embedVar)
                 notetag= self.noteTable.find_one({"_id":ctx.guild.id})
                 memberlist=notetag.get("members")
                 if member.id in memberlist and ctx.author.id in memberlist:
