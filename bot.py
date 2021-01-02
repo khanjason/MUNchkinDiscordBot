@@ -36,8 +36,13 @@ async def prefix(ctx,*,args):
 
             await ctx.send(embed=embedVar)
     else:
-        print(ctx.author.roles)
-        if ('Chair' in ctx.author.roles):
+        perm=False
+        for r in ctx.author.roles):
+            
+            if (r.name=='Chair'):
+                perm=True
+                break
+        if perm:
             args=args.split(' ')
             p=args[0]
             if prefixTable.find({"_id":ctx.guild.id}).count() > 0:
