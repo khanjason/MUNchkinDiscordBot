@@ -127,7 +127,7 @@ class Delegate(commands.Cog):
         else:
             embedVar = discord.Embed(title="About", description="MUNchkin Discord Bot", color=discord.Color.from_rgb(78,134,219))
             embedVar.add_field(name="Description", value="A discord bot for managing Model United Nations sessions (Harvard style).", inline=False)
-            embedVar.add_field(name="Version", value="v1.1.2", inline=False)
+            embedVar.add_field(name="Version", value="v1.1.0", inline=False)
             embedVar.add_field(name="Source Code", value="https://github.com/khanjason/MUNchkinDiscordBot", inline=False)
                 
             m= await ctx.channel.send(embed=embedVar)

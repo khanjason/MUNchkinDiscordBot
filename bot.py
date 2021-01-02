@@ -23,11 +23,10 @@ async def getPrefix(bot,message):
         preftag=prefixTable.find_one({"_id":message.guild.id})
         pref=preftag.get("prefix")
     else:
-
         pref='!'
         prefTag={"_id":message.guild.id,"prefix":pref}
         prefixTable.insert_one(prefTag)
-
+        
     return pref
 
 bot = commands.Bot(command_prefix=getPrefix)
@@ -83,8 +82,8 @@ for filename in os.listdir('./cogs'):
 
 @bot.command(pass_content=True)
 async def help(ctx):
-    if prefixTable.find({"_id":message.guild.id}).count() > 0:
-        preftag=prefixTable.find_one({"_id":message.guild.id})
+    if prefixTable.find({"_id":ctx.guild.id}).count() > 0:
+        preftag=prefixTable.find_one({"_id":ctx.guild.id})
         p=preftag.get("prefix")
     
     
