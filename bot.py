@@ -37,7 +37,7 @@ async def prefix(ctx,*,args):
             await ctx.send(embed=embedVar)
     else:
         perm=False
-        for r in ctx.author.roles):
+        for r in (ctx.author.roles):
             
             if (r.name=='Chair'):
                 perm=True
